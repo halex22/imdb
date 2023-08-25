@@ -1,0 +1,25 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        {% if field.widget_type == "text" or field.widget_type == "number" %}
+            {% include "form/text_input.html" %}
+        {% elif  field.widget_type == "clearablefile" %}
+            {% include "form/file_input.html" %}
+        {% elif  field.widget_type == "selectmultiple" %}
+            {% include "form/select_multi_input.html" with choices=field.field.widget.choices %}
+        {% elif field.widget_type == "select" %}
+            {% include "form/select_single_input.html" %}
+        {% else %}
+            {{field.label_tag}}
+            {{field}}
+            {{field.widget_type}}
+        {% endif %}        
+    {% endfor %}
+    <button class="btn btn-primary mb-3" type="submit">
+        {% if submit_msg %}
+            {{submit_msg}}
+        {% else %}
+            add a costum submit message
+        {% endif %}
+    </button>
+</form>

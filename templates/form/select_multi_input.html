@@ -1,0 +1,12 @@
+<div class="field-container multi-select">
+	
+	<label for="{{field.id_for_label}}" class="form-label">{{field.name|title}}</label>
+    <select name="{{ field.name }}" id="{{ field.id_for_label }}" multiple class="form-select">
+		{% for value, label in choices|dictsort:0 %}
+			<option value="{{value}}">{{label}}</option>
+    	{% endfor %}
+    </select>
+	{% if field.value != "null" %}
+		<span class="current-subgenres"> Current subgenres are: {{field.value}} </span>
+	{% endif %}
+</div>

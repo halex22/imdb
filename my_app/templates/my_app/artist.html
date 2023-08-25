@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'artist.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock css_file %}
+{% block js_file %}
+    <script src="{% static 'ajax.js' %}"></script>
+{% endblock js_file %}
+{% block title %}{{artist.name|title}}{% endblock title %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="artist-element">
+            <div class="artist-name-options">
+                <h4 id="fav-icon">{% if is_favorite %}🤩{% endif %}</h4><h2>{{artist.name|title}}</h2>
+                {% if user.is_authenticated %}
+                <div class="options">
+                    <span class="edit-delete"><a href="{% url 'edit-artist' pk=artist.id %}">Edit</a></span>
+                    <span class="edit-delete"><a href="#">Delete</a></span> 
+                </div>
+                {% endif %}                           
+            </div>
+            <div class="subgenres">
+                <ul class="subgenre-list">
+                    {% for subgenre in artist.subgenres %}
+                        <li class="subgenre-item">{{subgenre|title}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="artist-img">
+                <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid">
+            </div>
+            <div class="albums-container row">
+                {% for album in artist.albums.all %}
+                    <div class="album-info col">
+                        <div class="album-main-info">
+                            <div class="album-text-info">
+                                <h3><a href="{% url 'album' pk=album.id %}">{{album|title}}</a></h3>
+                            </div>
+                            <div class="album-cover">
+                                <img src="{{album.img.url}}" alt="{{album}}" class="mini-pre-album">
+                            </div>
+                        </div>                        
+                    </div>                    
+                {% endfor %}
+            </div>
+        </div>
+    {% include "form/fav_forms/fav_artist.html" %}
+    </div>
+{% endblock content %}

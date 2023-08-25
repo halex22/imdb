@@ -1,0 +1,13 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        {% include "form/text_input.html" %}
+    {% endfor %}
+    <button class="btn btn-primary mb-3" type="submit">
+        {% if submit_msg %}
+            {{submit_msg}}
+        {% else %}
+            add a costum submit message
+        {% endif %}
+    </button>
+</form>

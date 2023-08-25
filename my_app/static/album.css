@@ -1,0 +1,58 @@
+.name-artist {
+    display: flex;
+    align-items: baseline;
+}
+
+.album-name {
+    margin-right: 1rem;
+}
+
+.artist-name {
+    margin-left: 1rem;
+}
+
+.album-container {
+    margin: 2rem;
+}
+
+.album-cover {
+    width: 15rem;
+}
+
+.date {
+    margin: 2rem 0 ;
+}
+a {
+    text-decoration: none;
+}
+
+
+/* album list styles */
+.main-container {
+    margin: 2rem;
+}
+
+.mini-pre-album {
+    display: inline;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.list-album-name {
+    max-height: 2rem;
+    text-align: center;
+}
+
+.cover-container {
+    margin: 3rem 0 1rem 0;
+}
+.single-album {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+/* .list-artist-name  {
+} */

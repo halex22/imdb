@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'album.css'%}">
+{% endblock css_file %}
+
+{% block title %}{{album.name|title}} - {{album.artist.name|title}} {% endblock title %}
+
+{% block content %}
+<div class="album-container">
+    <div class="name-artist">
+        <h3 class="album-name">{{album.name|title}}</h3> <span>by </span>
+        <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id %}">{{album.artist|title}}</a></h4>
+    </div>
+
+    <p><a href="{% url 'edit-album' pk=album.id %}">Edit</a></p>
+    
+    <img src="{{album.img.url}}" alt="{{album.name|title}}" class="album-cover">
+    <div class="date">
+        <h5> First released on: {{album.released_date}}</h5>
+    </div>
+</div>
+{% endblock content %}
+
+
+

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'album.css'%}">
+{% endblock css_file %}
+{% block title %}Albums{% endblock title %}
+
+{% block content %}
+<div class="main-container">
+    <div class="album-list row">
+        {% for album in albums %}
+        <div class="col">
+            <div class="single-album ">
+                <div class="list-album-name">
+                    <h3>
+                        <a href="{% url 'album' pk=album.id %}">
+                            {% if album.name|length < 25  %}
+                                {{album.name|title}}
+                            {% else %}
+                                {{album.name|slice:"1:05"|title}}...
+                            {% endif %}                            
+                        </a>
+                    </h3>
+                </div>
+                <div class="cover-container">
+                    <img class="mini-pre-album" src="{{album.img.url}}" alt="{{album.name}}">
+                </div>
+                <div class="list-artist-name"><h4>{{album.artist.name|title}}</h4></div>
+                <div class="genres">
+                    {% for subgenre in album.artist.subgenres %}
+                        <span>{{subgenre|title}}</span>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

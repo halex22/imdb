@@ -1,0 +1,44 @@
+.main-container {
+    margin: 1rem;
+}
+
+h4, h2 {
+    display: inline;
+    margin-right: 1rem;
+}
+
+li {
+    display: inline;
+}
+
+.subgenre-item {
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    padding: 0.5rem;
+    margin: 2rem 0.5rem;
+}
+
+.subgenre-list {
+    margin-top: 2rem;
+}
+
+
+.mini-pre-album {
+    display: inline;
+    margin-left: 2rem;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.album-info {
+    margin: 2rem 0 ;
+    align-items: center;
+}
+
+.album-main-info {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+}

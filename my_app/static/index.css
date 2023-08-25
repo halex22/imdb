@@ -1,0 +1,17 @@
+.massages-container {
+    text-align: center;
+    margin-top: 1rem;
+}
+.messages {
+    list-style: none;
+}
+.success {
+    color: green;
+    font-weight: bolder;
+    font-size: 1.25rem;
+}
+
+.known-user{
+    text-align: center;
+    margin-top: 1rem;
+}

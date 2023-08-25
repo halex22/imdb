@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'app_management/css/forms_style.css' %}">
+{% endblock css_file %}
+{% block title %}Edit - {{form.name.value|title}} {% endblock title %}
+
+{% block content %}
+    <div class="form-container">
+        {% include "form/multi_form.html"  with submit_msg="Save Changes" %}
+    </div>
+
+{% endblock content %}
+

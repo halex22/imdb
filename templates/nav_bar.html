@@ -1,0 +1,80 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">
+          <i class="fa-solid fa-house">
+            <span class="site-name">Metal world</span>
+          </i>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'albums' %}">
+                <div class="logo">
+                    <i class="fa-solid fa-record-vinyl"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Albums</span>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'artists' %}">
+                <div class="logo">
+                    <i class="fa-solid fa-people-group"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Artists</span>
+                </div>
+            </a>
+        </li>
+        {% if user.is_anonymous %}
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'register' %}">
+                <div class="logo">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Sign Up</span>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'log-in' %}">
+                <div class="logo">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Log In</span>
+                </div>
+            </a>
+        </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a href="{% url 'user-profile' pk=user.id %}" class="nav-link active">
+                <div class="logo">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">My Profile</span>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'log-out'%}" class="nav-link active">
+                <div class="logo">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Log out</span>
+                </div>
+            </a>
+        </li>
+        {% endif %}
+      </ul>           
+      </div>
+    </div>
+  </nav>

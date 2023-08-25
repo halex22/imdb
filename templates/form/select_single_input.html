@@ -1,0 +1,9 @@
+<select name="{{field.name}}" id="{{ field.id_for_label }}">
+    {% for choice in field.field.queryset %}
+        <option value="{{choice.pk}}"{% if choice.pk == field.value %}selected{% endif %}>
+            {{choice.name|title}}
+        </option>
+    {% endfor %}
+</select>
+<br>
+{{field.errors}}

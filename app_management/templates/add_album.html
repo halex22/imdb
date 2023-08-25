@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'app_management/css/add_album.css' %}">
+{% endblock css_file %}
+
+{% block title %}Add album{% endblock title %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="title">
+        <h2>add a new album</h2>
+    </div>
+    <div class="form-container">
+        {% include "form/multi_form.html" with submit_msg="Add New Album" %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% if user.is_staff or user.is_superuser %}
+  <h4><a href="{% url 'home-management' %}">Go to app-management</a></h4>
+{% endif %}
+
+{% if fav_artists %}
+<div class="fav-artist">
+  <h3>This are your favorited artists</h3>
+  <ul>
+    {% for artist in fav_artists %}
+    <li>{{artist.name|title}}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+<div class="add-fav-artist">
+  <p>You don't have favorite artists yet.</p>
+</div>
+{% endif %}

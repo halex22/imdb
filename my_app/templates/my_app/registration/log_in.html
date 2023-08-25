@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}{% endblock css_file %}
+
+{% block title %}Log in{% endblock title %}
+
+
+{% block content %}
+    <div class="form-container">
+        {% include "form/new_user.html" %}
+    </div>
+{% endblock content %}

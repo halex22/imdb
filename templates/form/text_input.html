@@ -1,0 +1,15 @@
+<div class="field-container mb-3 form-floating">
+    <input
+        type="{{field.widget_type}}"
+        id="{{ field.id_for_label }}"
+        name="{{field.name}}"
+        required
+        data-mdb-showcounter="true"
+        class="form-control {% if field.errors %}is-invalid{% endif %}"
+        {% if field.value %} value="{{ field.value|title }}" {% endif %}
+    >
+    <label for="{{ field.id_for_label }}">{{field.label}}</label>
+    <br>
+    <div class="form-helper"></div>
+    {{field.errors}}
+</div>

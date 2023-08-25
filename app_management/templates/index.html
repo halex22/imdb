@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+  <link rel="stylesheet" href="{% static 'app_management/css/index.css' %}">
+{% endblock css_file %}
+{% block title %}Mangement{% endblock title %}
+
+{% block content %}
+
+<div class="greetings">
+    <h1>Welcome to the site management</h1>
+    <h3>You can handle all the modification to the database and form here</h3>
+    {{ msg }}
+    <div class="add-new">
+      <a class="btn btn-primary" href="{% url 'add-artist'%}">Add new Artist</a>
+      <a class="btn btn-primary" href="{% url 'add-album' %}">Add new Album</a>
+
+    </div>
+</div>
+{% endblock content %}

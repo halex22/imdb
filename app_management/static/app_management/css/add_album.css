@@ -1,0 +1,11 @@
+.artist option {
+    text-transform: capitalize;
+}
+
+.form-container {
+    margin: 0 20% ;
+    line-height: 1rem;
+    border: 3px solid rgb(208, 208, 208);
+    border-radius: 10px;
+    padding: 2rem;
+}

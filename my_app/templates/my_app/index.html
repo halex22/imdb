@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+  <link rel="stylesheet" href="{% static 'index.css'%}">
+{% endblock css_file %}
+{% block title %}Welcome Page{% endblock title %}
+
+{% block content %}
+
+  {% if messages %}
+  <div class="massages-container">
+    <ul class="messages">    
+    {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+
+
+  {% if user.is_authenticated %}
+  <div class="known-user">
+    <h1>Hello {{user|title}}</h1>
+    {% include "myapp/user/user_welcome.html" %}
+  </div>
+  {% else %}
+    <h1>Hello world</h1>
+  {% endif %}
+
+{% endblock content %}

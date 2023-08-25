@@ -1,0 +1,21 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        {% if field.widget_type == "text" or  field.widget_type == "number"%}
+            {% include "form/text_input.html" %}
+        {% elif  field.widget_type == "clearablefile" %}
+            {% include "form/file_input.html" %}
+        {% else %}
+            {{field.label_tag}}
+            {{field}}
+            {{field.widget_type}}
+        {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary mb-3" type="submit">
+        {% if submit_msg %}
+            {{submit_msg}}
+        {% else %}
+            add a costum submit message
+        {% endif %}
+    </button>
+</form>
