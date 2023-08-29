@@ -8,5 +8,6 @@ urlpatterns = [
     path("session-update", view=views.SessionUpdate.as_view(), name="session-update"),
     path("register", view=views.NewUserView.as_view(), name="register"),
     path("edit-artist/<int:pk>", view=views.EditArtist.as_view(), name="edit-artist"),
-    path("edit-album/<int:pk>", view=views.EditAlbum.as_view(), name="edit-album")
+    path("edit-album/<int:pk>", view=views.EditAlbum.as_view(), name="edit-album"),
+    path("add-a-rate", view=views.VoteCollector.as_view(), name="rate-album")
 ]

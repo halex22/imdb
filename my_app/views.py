@@ -1,17 +1,15 @@
 from django.shortcuts import render
-
-# Create your views here.
 from typing import Any, Dict
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView
-from app_management.models import Album, Artist
-from django.contrib.auth.models import User
+from app_management.models import Album, Artist, MetalHead
 from my_metal_code.db_helper import get_fav_artists
 from django.contrib.auth.views import LoginView, LogoutView
+from app_management.forms import RatingForm
 
 
 class Home(TemplateView):
@@ -39,6 +37,11 @@ class AlbumsList(TemplateView):
 class SingleAlbum(DetailView):
     template_name = "my_app/album.html"
     model = Album
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["rate_form"] = RatingForm()
+        return context
 
 
 class ArtistList(ListView):
@@ -81,5 +84,5 @@ class Logout(LogoutView):
 
 class UserView(DetailView):
     template_name = "my_app/user_profile.html"
-    model = User
+    model = MetalHead
     context_object_name = "user"

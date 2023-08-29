@@ -12,7 +12,7 @@
 }
 
 .album-container {
-    margin: 2rem;
+    margin: 2rem 3rem;
 }
 
 .album-cover {
@@ -54,5 +54,25 @@ a {
     flex-wrap: wrap;
     align-items: center;
 }
-/* .list-artist-name  {
-} */
+
+.hidden-element {
+    display: none;
+}
+
+.your-rating, .rate-this-album{
+    margin-bottom: 1rem;
+}
+
+.rate-this-album form{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.input-container {
+    margin: 0 1rem;
+}
+
+.help-text {
+    font-weight: bolder;
+}

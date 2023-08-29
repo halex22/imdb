@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load my_tags %}
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'album.css'%}">
 {% endblock css_file %}
+{% block js_file %}
+    <script src="{% static 'fnct.js' %}"></script>
+{% endblock js_file %}
 
 {% block title %}{{album.name|title}} - {{album.artist.name|title}} {% endblock title %}
 
@@ -14,7 +18,27 @@
     </div>
 
     <p><a href="{% url 'edit-album' pk=album.id %}">Edit</a></p>
-    
+    <div class="rating-container">
+        <h6>rating: <b>{{album.rating|divide:album.n_votes}}</b></h6>
+        <h6 class="n-votes">Total votes: <b>{{album.n_votes}}</b></h6>
+    </div>
+    {% if user.is_authenticated %}
+        <div class="your-rating">
+            {% if user.votes|has_voted:album.id %}                
+                <h6>Your rating is: <b>{{user.votes|get_user_rate:album.id}}</b></h6>
+                <button type="button" onclick="showToChange()" id="change-vote" class="btn btn-secondary">Change your vote</button>
+                <button type="button" onclick="showToChange()" id="keep-vote" class="hidden-element btn btn-danger">Cancel</button>
+            {% else %}
+                <button type="button" onclick="showToAdd()" id="add-vote" class="btn btn-secondary">Rate this album</button>
+                <button type="button" onclick="showToAdd()" id="dont-vote" class="hidden-element btn btn-danger">Cancel</button>
+            {% endif %}                
+        </div> 
+    {% endif %}
+
+    <div class="rate-this-album hidden-element" id="rate_form">
+        {% include "form/fav_forms/rating_form.html" %}
+    </div>
+
     <img src="{{album.img.url}}" alt="{{album.name|title}}" class="album-cover">
     <div class="date">
         <h5> First released on: {{album.released_date}}</h5>

@@ -7,9 +7,9 @@ from django.views import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView
 from .forms import NewForm, NewArtistForm
-from .models import Artist, Album
-from django.contrib.auth.models import User
+from .models import Artist, Album, MetalHead
 from my_metal_code.decorators import show_errors, handle_img_from_form, update_session, presave_edit_form
+from my_metal_code import decorators
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 
@@ -57,7 +57,7 @@ class SessionUpdate(View):
 
 class NewUserView(CreateView):
     template_name = "add_user.html"
-    model = User
+    model = MetalHead
     form_class = UserCreationForm
     success_url = reverse_lazy("home")
 
@@ -92,4 +92,11 @@ class EditAlbum(UpdateView):
         return super().form_valid(form)
     
     def get_success_url(self) -> str:
+        return reverse("album", args=[int(self.get_object().pk)])
+    
+
+class VoteCollector(View):
+
+    @decorators.rate_album
+    def post(self, *args, **kwargs):
         return reverse("album", args=[int(self.get_object().pk)])

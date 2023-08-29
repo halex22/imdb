@@ -4,12 +4,13 @@ from django.utils import timezone
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager, User
+
 
 class MetalHead(AbstractUser):
 
-    votes = models.JSONField()
-
+    votes = models.JSONField(default=dict, blank=True, null=False)
+    objects = UserManager()
     def __str__(self) -> str:
         return super().__str__()
     

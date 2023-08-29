@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'rate-album' %}">
+    {% csrf_token %}
+    <label for="rate">{{rate_form.rating.label_tag}}</label><br>
+    <div class="input-container">
+        <input type="number" name="rate" id="rate"> {{rate_form.ting}}
+        <input type="hidden" value="{{album.id}}" name="album_id" id="album_id">
+        <input type="hidden" value="{{user.id}}" name="user_id" id="user_id"><br>
+    </div>
+    <button type="submit" class="btn btn-primary submit-btn">Submmit</button>
+</form>
+<p class="help-text">{{rate_form.rating.help_text|capfirst}}</p>
+{% endif %}

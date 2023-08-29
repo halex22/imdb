@@ -1,9 +1,8 @@
 from typing import Any, Dict, Mapping, Optional, Type, Union
-from django.forms import Form, NumberInput, ModelForm
+from django.forms import Form, NumberInput, ModelForm, FloatField, IntegerField
 from django.forms.widgets import TextInput, Select, Input, SelectMultiple, ClearableFileInput, PasswordInput, EmailInput
 from my_metal_code.subgenres import metal_subgenres
-from .models import Artist, Album
-from django.contrib.auth.models import User
+from .models import Artist, Album, MetalHead
 
 
 class NewForm(ModelForm):
@@ -59,7 +58,7 @@ class NewArtistForm(ModelForm):
 
 class NewUserForm(ModelForm):
     class Meta:
-        model = User
+        model = MetalHead
         fields = ["username", "email", "password"]
 
         widgets = {
@@ -75,3 +74,10 @@ class NewUserForm(ModelForm):
                 widget.attrs['class'] += f' {common_class}'
             else:
                 widget.attrs['class'] = common_class
+
+
+class RatingForm(Form):
+    
+    rating = FloatField(max_value=10, min_value=1, help_text="rate this album in the scale of 1 to 10")
+    voter_id = IntegerField(min_value=1, required=True)
+    album_id = IntegerField(min_value=1, required=True)
