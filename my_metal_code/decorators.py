@@ -1,5 +1,6 @@
 from django.forms import BaseModelForm
 from django.http import JsonResponse, HttpRequest
+from django.contrib import messages
 from functools import wraps
 from .db_helper import rate_req_cleaner, update_album_rating, get_old_vote
 from app_management.models import MetalHead, Album
@@ -108,24 +109,18 @@ def rate_album(view_method):
     def decorator(self, *args, **kwargs):
         clean_data = rate_req_cleaner(self.request.POST)
         album = Album.objects.get(pk=clean_data["album_id"])
-        print(clean_data)
         if self.request.user.id == clean_data["user_id"]:
             user = MetalHead.objects.get(pk=clean_data["user_id"])            
             if not user.votes:
                 user.votes = {clean_data["album_id"]:clean_data["rate"]}
-                update_album_rating(album=album, rating=clean_data["rate"])
+                messages.success(self.request, "Thanks for rating this album. Keep rocking on !")
             else:
-                if not clean_data["album_id"] in user.votes.keys():
-                    user.votes[clean_data["album_id"]] = clean_data["rate"]
-                    update_album_rating(album=album, rating=clean_data["rate"])
-                else:
-                    update_album_rating(
-                        album=album,
-                        rating=get_old_vote(user=user, album_id=clean_data["album_id"]),
-                        add=False
-                    )
-                    user.votes[clean_data["album_id"]] = clean_data["rate"]
-                    update_album_rating(album=album, rating=clean_data["rate"])
+                if str(clean_data["album_id"]) in user.votes.keys():
+                    old_rate = get_old_vote(user=user, album_id=clean_data["album_id"])
+                    update_album_rating(album=album, rating=old_rate, add=False)
+                user.votes[clean_data["album_id"]] = clean_data["rate"]
+                messages.success(self.request, "album's rate change successfully")
+            update_album_rating(album=album, rating=clean_data["rate"])
             user.save()
         return view_method(self, *args, **kwargs)
     return decorator

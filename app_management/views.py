@@ -1,5 +1,6 @@
 from typing import Any
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -99,4 +100,4 @@ class VoteCollector(View):
 
     @decorators.rate_album
     def post(self, *args, **kwargs):
-        return reverse("album", args=[int(self.get_object().pk)])
+        return redirect("album", pk=int(self.request.POST["album_id"]))
