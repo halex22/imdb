@@ -1,15 +1,18 @@
 from django.forms import BaseModelForm
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, HttpRequest
 from django.contrib import messages
 from functools import wraps
 from .db_helper import rate_req_cleaner, update_album_rating, get_old_vote
 from app_management.models import MetalHead, Album
 
+
 def show_errors(view_method):
     """
     decorator function to be used with a view class like CreateView or EditView
     note: the view class must have a post method defind
     """
+
     def decorator(self, request, *args, **kwargs):
         form = self.get_form()
         if not form.is_valid():
@@ -17,6 +20,7 @@ def show_errors(view_method):
                 for error_message in errors:
                     print(f"Error for field '{field_name}': {error_message}")
         return view_method(self, request, *args, **kwargs)
+
     return decorator
 
 
@@ -25,6 +29,7 @@ def handle_img_from_form(view_method):
     decorator function to handle the storate og the image loaded in a form
     note: remember to name the field "img" to proceed properly
     """
+
     def decorator(self, form: BaseModelForm, *args, **kwargs):
         instance = form.save(commit=False)
         if "img" in self.request.FILES:
@@ -33,10 +38,11 @@ def handle_img_from_form(view_method):
             return view_method(self, form, *args, **kwargs)
         else:
             raise AttributeError("The 'img' field is missing in the form.")
+
     return decorator
 
 
-def presave_edit_form(empty_allowed_field = None):
+def presave_edit_form(empty_allowed_field=None):
     def decorator(view_method):
         @wraps(view_method)
         def wrapper(self, form: BaseModelForm, *args, **kwargs):
@@ -49,8 +55,11 @@ def presave_edit_form(empty_allowed_field = None):
                         setattr(instance, field, getattr(self.get_object(), field))
             instance.save()
             return view_method(self, form, *args, **kwargs)
+
         return wrapper
+
     return decorator
+
 
 def update_session(session_name: str, query_name: str, delete_key: str = "delete"):
     """
@@ -78,9 +87,10 @@ def update_session(session_name: str, query_name: str, delete_key: str = "delete
         # Your view logic here
         pass
     """
+
     def decorator(view_func):
         @wraps(view_func)
-        def wrapper(self,  *args, **kwargs):
+        def wrapper(self, *args, **kwargs):
             request = self.request
             if request.method == "POST":
                 if session_name in request.session:
@@ -95,33 +105,35 @@ def update_session(session_name: str, query_name: str, delete_key: str = "delete
                     if request.session[session_name].__len__() == 0:
                         del request.session[session_name]
                     else:
-                        request.session[session_name] = current_elements 
+                        request.session[session_name] = current_elements
                     request.session.modified = True
                 else:
                     request.session[session_name] = [request.POST[query_name]]
                     request.session.modified = True
             return view_func(request, *args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
 def rate_album(view_method):
     def decorator(self, *args, **kwargs):
         clean_data = rate_req_cleaner(self.request.POST)
-        album = Album.objects.get(pk=clean_data["album_id"])
+        album = get_object_or_404(Album, pk=clean_data["album_id"])
+        user = get_object_or_404(MetalHead, pk=clean_data["user_id"])
         if self.request.user.id == clean_data["user_id"]:
-            user = MetalHead.objects.get(pk=clean_data["user_id"])            
-            if not user.votes:
-                user.votes = {clean_data["album_id"]:clean_data["rate"]}
+            album_id_str = str(clean_data["album_id"])
+            if album_id_str not in user.votes.keys() or not user.votes:
                 messages.success(self.request, "Thanks for rating this album. Keep rocking on !")
+                new = True               
             else:
-                if str(clean_data["album_id"]) in user.votes.keys():
-                    old_rate = get_old_vote(user=user, album_id=clean_data["album_id"])
-                    update_album_rating(album=album, rating=old_rate, add=False)
-                user.votes[clean_data["album_id"]] = clean_data["rate"]
-                messages.success(self.request, "album's rate change successfully")
-            update_album_rating(album=album, rating=clean_data["rate"])
+                old_rate = get_old_vote(user=user, album_id=clean_data["album_id"])
+                new = False
+                update_album_rating(album=album, rating=old_rate, add=False, new=new)
+                messages.success(self.request, "Your rate was chenged successfully.")
+            user.votes[album_id_str] = clean_data["rate"]
+            update_album_rating(album=album, rating=clean_data["rate"], new=new)
             user.save()
         return view_method(self, *args, **kwargs)
     return decorator
-

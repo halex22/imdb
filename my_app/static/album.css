@@ -13,6 +13,25 @@
 
 .album-container {
     margin: 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.r-side {
+    display: grid;
+    grid-template-rows: 0.5fr 10fr
+}
+
+.album-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.img-cover-container {
+    display: flex;
+    justify-content: center;
 }
 
 .album-cover {
@@ -26,10 +45,20 @@ a {
     text-decoration: none;
 }
 
+.sub-item {
+    display: inline;
+    margin-left: 1rem;
+    padding: 0.2rem;
+    border: 5px solid black;
+    border-radius: 10px;
+    color: white;
+    background-color: black;
+}
+
 
 /* album list styles */
 .main-container {
-    margin: 2rem;
+    margin: 2rem 4rem;
 }
 
 .mini-pre-album {
@@ -49,6 +78,7 @@ a {
     margin: 3rem 0 1rem 0;
 }
 .single-album {
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

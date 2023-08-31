@@ -1,0 +1,19 @@
+{% load my_tags %}
+<ul>
+    {% for album in rated_albums %}
+        {% spaceless %}
+        <li>
+            <a href="{% url 'album' pk=album.pk %}">{{album.name|title}}</a>
+            <span>- rated {{metalhead.votes|get_user_rate:album.id}}</span>
+        </li>
+        {% endspaceless %}
+    {% empty %}
+    <span>
+        {% if user == metalhead %}
+        You haven't rate any album yet. click here to check out the <a href="{% url 'albums' %}">albums</a> availables.
+        {% else %}
+        This user hasn't rate any album yet.
+        {% endif %}
+    </span>
+    {% endfor %}
+</ul>

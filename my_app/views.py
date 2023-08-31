@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView
 from app_management.models import Album, Artist, MetalHead
-from my_metal_code.db_helper import get_fav_artists
+from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from django.contrib.auth.views import LoginView, LogoutView
 from app_management.forms import RatingForm
 
@@ -86,4 +86,12 @@ class Logout(LogoutView):
 class UserView(DetailView):
     template_name = "my_app/user_profile.html"
     model = MetalHead
-    context_object_name = "user"
+    context_object_name = "metalhead"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        metalhead = self.get_object()
+        if metalhead.votes:
+            context["rated_albums"] = get_rated_albums(user_id=int(metalhead.pk))
+        return context
+        

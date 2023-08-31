@@ -9,3 +9,11 @@ function showToAdd() {
     $("#rate_form").toggle("hidden-element");
     $("#dont-vote").toggle("hidden-element");
 }
+
+$(document).ready(()=> {
+    function handleResize() {
+        if ($(window).width() <= 750) {
+            $(("#album-container").css("display", "block"))
+        }
+    }
+})

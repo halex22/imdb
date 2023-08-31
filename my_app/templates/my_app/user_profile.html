@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-
-{% block title %}{{user.name}}{% endblock title %}
+{% load my_tags %}
+{% block title %}Profile - {{metalhead.username|title}}{% endblock title %}
 
 {% block content %}
 <div class="main-container">
     <div class="profile-name">
-        <h2>{{user.name}}</h2>
+        <h2>{{metalhead.username|title}}</h2>
+        <h6>{% if metalhead.is_staff %}Moderator 🎖️{% else %}Normal User 👤{% endif %}</h6>
+        <h6>Last seen: {{metalhead.last_login|timesince}}</h6>
+    </div>
+    <div class="rated-albums">
+        {% include "my_app/user/rated_albums.html" %}
     </div>
 </div>
 {% endblock content %}

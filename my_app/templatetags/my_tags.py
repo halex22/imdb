@@ -1,4 +1,5 @@
 from django import template
+from typing import Dict
 
 register = template.Library()
 
@@ -18,5 +19,5 @@ def has_voted(user_votes: dict, album_id:  int) -> bool:
     
 
 @register.filter(name="get_user_rate")
-def get_user_rate(user_votes: dict, album_id:  int) -> float:
+def get_user_rate(user_votes: Dict[str, float], album_id:  int) -> float:
     return user_votes[str(album_id)]

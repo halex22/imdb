@@ -10,7 +10,7 @@ class NewForm(ModelForm):
         query_set = [(artist.name, artist.name) for artist in Artist.objects.all()]
         model = Album
         # fields = "__all__"
-        exclude = ["added_date"]
+        exclude = ["added_date", "n_votes", "rating"]
         labels = {
             "name": "Name of the album",
             "img": "Album cover"

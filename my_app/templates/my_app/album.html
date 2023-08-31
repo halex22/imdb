@@ -11,39 +11,92 @@
 {% block title %}{{album.name|title}} - {{album.artist.name|title}} {% endblock title %}
 
 {% block content %}
-<div class="album-container">
-    <div class="name-artist">
-        <h3 class="album-name">{{album.name|title}}</h3> <span>by </span>
-        <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id %}">{{album.artist|title}}</a></h4>
-    </div>
-
-    <p><a href="{% url 'edit-album' pk=album.id %}">Edit</a></p>
-    <div class="rating-container">
-        <h6>rating: <b>{{album.rating|divide:album.n_votes}}</b></h6>
-        <h6 class="n-votes">Total votes: <b>{{album.n_votes}}</b></h6>
-    </div>
-    {% if user.is_authenticated %}
-        <div class="your-rating">
-            {% if user.votes|has_voted:album.id %}                
-                <h6>Your rating is: <b>{{user.votes|get_user_rate:album.id}}</b></h6>
-                <button type="button" onclick="showToChange()" id="change-vote" class="btn btn-secondary">Change your vote</button>
-                <button type="button" onclick="showToChange()" id="keep-vote" class="hidden-element btn btn-danger">Cancel</button>
-            {% else %}
-                <button type="button" onclick="showToAdd()" id="add-vote" class="btn btn-secondary">Rate this album</button>
-                <button type="button" onclick="showToAdd()" id="dont-vote" class="hidden-element btn btn-danger">Cancel</button>
-            {% endif %}                
-        </div> 
-    {% endif %}
-
-    <div class="rate-this-album hidden-element" id="rate_form">
-        {% include "form/fav_forms/rating_form.html" %}
-    </div>
-
-    <img src="{{album.img.url}}" alt="{{album.name|title}}" class="album-cover">
-    <div class="date">
-        <h5> First released on: {{album.released_date}}</h5>
-    </div>
+<div class="test row">
+    <div class="col-md-6"><span>This is my test</span></div>
+    <div class="col-md-6">this is  </div>
 </div>
+
+<div class="album-container">
+    <div class="l-side">
+        <div class="name-artist">
+            <h3 class="album-name">{{album.name|title}}</h3> <span>by </span>
+            <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id %}">{{album.artist|title}}</a></h4>
+        </div>
+        
+        {% if user.is_staff %}
+            <p><a href="{% url 'edit-album' pk=album.id %}">Edit</a></p>
+        {% endif %}
+        
+        <div class="rating-container">
+            <h6>rating: <b>{{album.rating|divide:album.n_votes}}</b></h6>
+            <h6 class="n-votes">Total votes: <b>{{album.n_votes}}</b></h6>
+        </div>
+        {% if user.is_authenticated %}
+            <div class="your-rating">
+                {% if user.votes|has_voted:album.id %}                
+                    <h6>Your rating is: <b>{{user.votes|get_user_rate:album.id}}</b></h6>
+                    <button type="button" onclick="showToChange()" id="change-vote" class="btn btn-secondary">Change your vote</button>
+                    <button type="button" onclick="showToChange()" id="keep-vote" class="hidden-element btn btn-danger">Cancel</button>
+                {% else %}
+                    <button type="button" onclick="showToAdd()" id="add-vote" class="btn btn-secondary">Rate this album</button>
+                    <button type="button" onclick="showToAdd()" id="dont-vote" class="hidden-element btn btn-danger">Cancel</button>
+                {% endif %}                
+            </div> 
+        {% endif %}
+    
+        <div class="rate-this-album hidden-element" id="rate_form">
+            {% include "form/fav_forms/rating_form.html" %}
+        </div>
+        <div class="img-cover-container">
+            <img src="{{album.img.url}}" alt="{{album.name|title}}" class="album-cover">
+        </div>
+        <div class="date">
+            <h5> First released on: {{album.released_date}}</h5>
+        </div>
+    </div>
+    
+    <div class="r-side">
+        <div class="info"><h3>Information</h3></div>
+        <div class="album-info">
+            <div class="other-albums-artist">
+                {% if album.artist.albums.all|length > 1 %}
+                <h5>other albums from this artist</h5>
+                    <ul>
+                        {% for other_album in album.artist.albums.all  %}
+                            {% if other_album.name != album.name %}
+                            <li><a href="{% url 'album' pk=other_album.pk %}">{{other_album.name|title}}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <h6>No other album from this artist.</h6>
+                {% endif %}
+            </div>
+            <div class="tracks">
+                <span>Total Tracks: </span>
+            </div>
+
+            <div class="main-genre">
+                <span>Artist main genre: <b>{{album.artist.genre|title}}</b></span>
+            </div>
+            <div class="artist-subgenres">
+                <p>Metal subgenre that this album may contain:</p>
+                <ul class="sub-list">
+                    {% for subgenre in album.artist.subgenres %}
+                    <li class="sub-item">{{subgenre|title}}</li>
+                    {% empty %}
+                    <li> No subgenres available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="album-age">
+                <span>Album released: {{album.released_date|timesince}} ago</span>
+            </div>
+        </div>
+    </div>   
+</div>
+
+
 {% endblock content %}
 
 
