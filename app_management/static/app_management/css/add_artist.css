@@ -2,6 +2,19 @@
     margin-left: 1rem;
 }
 
+#artist-found {
+    color: red;
+
+}
+.found-artist-section {
+    display: none;
+}
+
+.header {
+    margin: 1rem 0;
+    text-align: center;
+}
+
 .input-container {
     margin: 1rem;
 }
@@ -32,7 +45,7 @@ ul {
 
 button {
     border-radius: 5px;
-    margin-left: 1rem;
+    margin-top: 1rem;
 }
 
 .form-container {

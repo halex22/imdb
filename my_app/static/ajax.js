@@ -2,7 +2,6 @@ $(document).ready(
     console.log("What would we do with the drunken sailor ?")    
 )
 
-
 function updateFavArtist(x, add) {
     const endpointURL = $("#endpoint").val();
     const token = $("input").val();

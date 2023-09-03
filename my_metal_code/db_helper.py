@@ -49,3 +49,14 @@ def update_album_rating(album: Album, rating: float, new: bool,
 
 def get_old_vote(user:MetalHead, album_id: int) -> float:
     return user.votes[str(album_id)]
+
+
+
+def artist_name_exist(name: str) -> bool:
+    pk = None
+    try:
+        if Artist.objects.get(name=name):
+            pk = Artist.objects.get(name=name).pk
+    except:
+        pass
+    return pk 

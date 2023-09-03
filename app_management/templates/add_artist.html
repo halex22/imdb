@@ -12,7 +12,11 @@
 <div class="wrapper">
     <div class="header">
         <h2>Add new artist</h2>
-        <p>Remeber to make a query to see if artist already exist.</p>
+        <div class="found-artist-section">
+            <h4 id="artist-found">Artist already exist</h4>
+            <h6 class="found-info">take a look <a href="" id="found_pk">here</a></h6>
+        </div>
+        <input type="hidden" value="{% url 'artist-checher' %}" id="endpoint">
     </div>
     <div class="form-container">
         {% include "form/multi_form.html" with submit_msg="Add New Artist" %}

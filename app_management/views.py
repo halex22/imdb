@@ -13,6 +13,7 @@ from my_metal_code.decorators import show_errors, handle_img_from_form, update_s
 from my_metal_code import decorators
 from django.contrib.auth import login
 from django.urls import reverse_lazy
+from my_metal_code.db_helper import artist_name_exist
 
 
 class HomeView(TemplateView):
@@ -101,3 +102,10 @@ class VoteCollector(View):
     @decorators.rate_album
     def post(self, *args, **kwargs):
         return redirect("album", pk=int(self.request.POST["album_id"]))
+    
+
+class ArtistChecker(View):
+
+    def post(self,*args, **kwargs):
+        artist_id =  artist_name_exist(name=self.request.POST["artist_name"].lower())
+        return JsonResponse({"message": artist_id})

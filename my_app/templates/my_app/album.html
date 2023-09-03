@@ -11,13 +11,8 @@
 {% block title %}{{album.name|title}} - {{album.artist.name|title}} {% endblock title %}
 
 {% block content %}
-<div class="test row">
-    <div class="col-md-6"><span>This is my test</span></div>
-    <div class="col-md-6">this is  </div>
-</div>
-
-<div class="album-container">
-    <div class="l-side">
+<div class="album-container row">
+    <div class="l-side col-md-6">
         <div class="name-artist">
             <h3 class="album-name">{{album.name|title}}</h3> <span>by </span>
             <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id %}">{{album.artist|title}}</a></h4>
@@ -55,18 +50,23 @@
         </div>
     </div>
     
-    <div class="r-side">
+    <div class="r-side col-md-6">
         <div class="info"><h3>Information</h3></div>
         <div class="album-info">
             <div class="other-albums-artist">
                 {% if album.artist.albums.all|length > 1 %}
                 <h5>other albums from this artist</h5>
                     <ul>
+                        {% spaceless %}
                         {% for other_album in album.artist.albums.all  %}
-                            {% if other_album.name != album.name %}
-                            <li><a href="{% url 'album' pk=other_album.pk %}">{{other_album.name|title}}</a></li>
-                            {% endif %}
-                        {% endfor %}
+                        {% if other_album.name != album.name %}
+                        <li>
+                            <a href="{% url 'album' pk=other_album.pk %}">{{other_album.name|title}}</a>
+                            <img src="{{other_album.img.url}}" alt="{{other_album}}" class="other-album-img">
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                        {% endspaceless %}     
                     </ul>
                 {% else %}
                 <h6>No other album from this artist.</h6>
@@ -80,8 +80,8 @@
                 <span>Artist main genre: <b>{{album.artist.genre|title}}</b></span>
             </div>
             <div class="artist-subgenres">
-                <p>Metal subgenre that this album may contain:</p>
-                <ul class="sub-list">
+                <p class="sub-info">Metal subgenre that this album may contain:</p>
+                <ul class="sub-list ">
                     {% for subgenre in album.artist.subgenres %}
                     <li class="sub-item">{{subgenre|title}}</li>
                     {% empty %}
