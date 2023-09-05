@@ -96,6 +96,20 @@
     </div>   
 </div>
 
+<div class="album-contrib">
+    {% for contrib in album.contributors.all %}
+    {% ifchanged  %}
+    <h4>{{ contrib }}</h4>
+    <div class="contribs">
+        <ul>
+            {% for album_contributor in contrib.albumcontributor_set.all %}
+            <li>{{ album_contributor.role }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endifchanged %}
+    {% endfor %}
+</div>
 
 {% endblock content %}
 

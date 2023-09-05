@@ -10,7 +10,9 @@ from app_management.models import Album, Artist, MetalHead
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from django.contrib.auth.views import LoginView, LogoutView
 from app_management.forms import RatingForm
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class Home(TemplateView):
     template_name = "my_app/index.html"
@@ -85,7 +87,7 @@ class Logout(LogoutView):
 
 class UserView(DetailView):
     template_name = "my_app/user_profile.html"
-    model = MetalHead
+    model = User
     context_object_name = "metalhead"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:

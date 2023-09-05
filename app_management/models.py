@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any
 from django.db import models
 from django.utils import timezone
@@ -13,6 +14,16 @@ class MetalHead(AbstractUser):
     objects = UserManager()
     def __str__(self) -> str:
         return super().__str__()
+    
+
+class Member(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, default="", blank=True)
+    nickname = models.CharField(max_length=30, default="", blank=True)
+    birth_date = models.DateField()
+
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
     
 
 class Artist(models.Model):
@@ -54,9 +65,30 @@ class Album(models.Model):
         MinValueValidator(limit_value=0, message="The lowest rate is 0"),
         MaxValueValidator(limit_value=10, message="The highest rate is 10")
     ])
+    contributors = models.ManyToManyField(
+        Member,
+        through="AlbumContributor",
+        related_name="contributed_albums"
+    )
 
     def __str__(self) -> str:
         return self.name
+    
+
+class Role(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+    
+
+class AlbumContributor(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.person.name} - {self.album.name} - {self.role.name}"
 
 
 @receiver(models.signals.pre_save, sender=Artist)
@@ -68,4 +100,9 @@ def artist_pre_save(sender, instance, **kwargs):
 
 @receiver(models.signals.pre_save, sender=Album)
 def album_pre_save(sender, instance, **kwargs):
+    instance.name = instance.name.lower()
+
+
+@receiver(models.signals.pre_save, sender= Role)
+def role_pre_save(sender, instance, **kwargs):
     instance.name = instance.name.lower()

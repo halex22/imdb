@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block js_file %}{% endblock js_file %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'app_management/css/add_album.css' %}">
+{% endblock css_file %}
+
+{% block title %}Add new role{% endblock title %}
+
+{% block content %}
+    <div class="form-container">
+        {% include 'form/base_form.html' with submit_msg="Add Member" %}
+    </div>
+{% endblock content %}

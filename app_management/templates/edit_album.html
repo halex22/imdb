@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block js_file %}<script src="{% static 'app_management/js/add_album.js' %}"></script>{% endblock js_file %}
+   
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'app_management/css/forms_style.css' %}">
 {% endblock css_file %}

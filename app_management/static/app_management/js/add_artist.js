@@ -6,7 +6,6 @@ function searchArtist(input) {
   const artistName = $(input).val();
   const endpoint = $("#endpoint").val();
   const token = $("input[name='csrfmiddlewaretoken']").val()
-  console.log(artistName, endpoint)
 
   const requestData = {
     "artist_name": artistName

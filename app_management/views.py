@@ -1,5 +1,4 @@
-from typing import Any
-from django.contrib.auth.forms import UserCreationForm
+from typing import Any, Dict
 from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.urls import reverse
@@ -7,14 +6,16 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView
-from .forms import NewForm, NewArtistForm
-from .models import Artist, Album, MetalHead
+from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, AlbumContributorForm
+from .models import Artist, Album, Role, Member, AlbumContributor
 from my_metal_code.decorators import show_errors, handle_img_from_form, update_session, presave_edit_form
 from my_metal_code import decorators
 from django.contrib.auth import login
 from django.urls import reverse_lazy
 from my_metal_code.db_helper import artist_name_exist
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class HomeView(TemplateView):
     template_name = "index.html"
@@ -36,7 +37,7 @@ class NewAlbumView(CreateView):
 
 
 class NewArtistView(CreateView):
-    template_name = "add_artist.html"
+    template_name = "add/add_artist.html"
     model = Artist
     form_class = NewArtistForm
     success_url = "/app-management"
@@ -58,9 +59,9 @@ class SessionUpdate(View):
 
 
 class NewUserView(CreateView):
-    template_name = "add_user.html"
-    model = MetalHead
-    form_class = UserCreationForm
+    template_name = "add/add_user.html"
+    model = User
+    form_class = SingUpForm
     success_url = reverse_lazy("home")
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
@@ -109,3 +110,24 @@ class ArtistChecker(View):
     def post(self,*args, **kwargs):
         artist_id =  artist_name_exist(name=self.request.POST["artist_name"].lower())
         return JsonResponse({"message": artist_id})
+    
+
+class AddRole(CreateView):
+    template_name = "add/add_role.html"
+    model = Role
+    form_class = RoleForm
+    success_url = reverse_lazy("home")
+
+
+class AddMember(CreateView):
+    template_name = "add/add_member.html"
+    model = Member
+    form_class = MemberForm
+    success_url = reverse_lazy("home")
+
+
+class addContribAlbum(CreateView):
+    template_name = "add/add_album_contrib.html"
+    model = AlbumContributor
+    form_class = AlbumContributorForm
+    success_url = reverse_lazy("home")
