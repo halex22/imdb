@@ -1,12 +1,21 @@
-from typing import Any, Dict, Mapping, Optional, Type, Union
-from django.forms import Form, NumberInput, ModelForm, FloatField, IntegerField
+from typing import Any, Dict, Mapping, Optional, Type, Union, Iterable
+from django.forms import Form, NumberInput, ModelForm, FloatField, IntegerField, ModelChoiceField
 from django.forms.widgets import TextInput, Select, Input, SelectMultiple, ClearableFileInput, PasswordInput, EmailInput
 from my_metal_code.choices_lists import metal_subgenres, metal_instruments
-from .models import Artist, Album, MetalHead, Role, Member, AlbumContributor
+from my_metal_code.forms_helper import create_select, create_multi_select
+from .models import Artist, Album, MetalHead, Role, Member, Contributions
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class choiceArtist(Form):
+    artist = ModelChoiceField(
+        queryset=Artist.objects,
+        widget=Select(attrs={"class": "form-element form-select"})
+    )
+
 
 class SingUpForm(UserCreationForm):
     
@@ -18,7 +27,6 @@ class SingUpForm(UserCreationForm):
 
 class NewForm(ModelForm):
     class Meta:
-        query_set = [(artist.name, artist.name) for artist in Artist.objects.all()]
         model = Album
         # fields = "__all__"
         exclude = ["added_date", "n_votes", "rating"]
@@ -34,8 +42,7 @@ class NewForm(ModelForm):
                     "type": "date"
                 },
             ),
-            "artist": Select(attrs={"class": "form-element form-select"},
-                             choices=query_set)
+            "artist": create_select(iterable=Artist.objects.all())
         }
         error_messages = {
             "album_name": {
@@ -54,15 +61,15 @@ class NewArtistForm(ModelForm):
             "name": "Band Name",
             "genre": "Main Genre",
             "fundation_date": "Fundation Year",
-            "img": "Band Image"
+            "img": "Band Image",
+            "active_members": "Active Members",
+            "all_members": "All Members"
         }
 
         widgets = {
             "fundation_date": NumberInput(),
-            "subgenres": SelectMultiple(
-                attrs={"class": "form-select"},
-                choices=[(genre, genre) for genre in metal_subgenres]
-            ),
+            # "genre":create_select(iterable=metal_subgenres),
+            "subgenres": create_multi_select(iterable=metal_subgenres),
             "img": ClearableFileInput(attrs={"accept": "image/*"}),  # Add this line for the file input
         }
 
@@ -100,17 +107,13 @@ class RoleForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RoleForm, self).__init__(*args, **kwargs)
-        self.added_roles = [role.name for role in Role.objects.all()]
 
     class Meta:
         model =  Role
         fields = "__all__"
 
         widgets = {
-            "name": Select(
-                attrs={"class": "form-element form-select"},
-                choices= [(instrument, instrument) for instrument in metal_instruments]
-            )
+            "name": create_select(iterable=metal_instruments)
         }
 
         help_text =  {
@@ -123,41 +126,31 @@ class MemberForm(ModelForm):
     class Meta:
         model = Member
         fields = "__all__"
-        
-        labels = {
-            "birth_date": "Date of Birth"
-        }
+        text_widget = TextInput(attrs={"class": "form-element"})
+        select_widget = create_multi_select(iterable=Artist.objects.all())
+        labels = {"birth_date": "Date of Birth"}
 
         widgets = {
-            "first_name": TextInput(attrs={"class": "form-element"}),
-            "last_name": TextInput(attrs={"class": "form-element"}),
-            "nickname": TextInput(attrs={"class": "form-element"}),
-            "birth_date": Input(attrs={"class": "form-element", "type": "date"})
+            "first_name": text_widget,
+            "last_name": text_widget,
+            "nickname": text_widget,
+            "birth_date": Input(attrs={"class": "form-element", "type": "date"}),
+            "active_on": select_widget,
+            "former_on": select_widget,
         }
 
 
-class AlbumContributorForm(ModelForm):
+class ContributionForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        artist_id = kwargs.pop('artist_id')
+        artist = Artist.objects.get(pk=int(artist_id))
+        super(ContributionForm, self).__init__(*args, **kwargs)
+        self.fields["member"].widget = create_select(iterable=artist.active_groups.all())
+        self.fields["album"]. widget = create_select(iterable=artist.albums.all())
 
     class Meta:
-        model = AlbumContributor
+        model = Contributions
         fields = "__all__"
-
-        labels = {
-            "role": "Contribution in this album"
-        }
-
-        widgets = {
-            "member": Select(
-                attrs={"class": "form-element form-select"},
-                choices= [(member, member) for member in Member.objects.all()]
-            ),
-            "role": Select(
-                attrs={"class": "form-element form-select"},
-                choices=[(role, role) for role in Role.objects.all()]
-            ),
-            "album": Select(
-                attrs={"class": "form-element form-select"},
-                choices=[(album, album) for album in Album.objects.all()]
-            )
-        }
-
+        widgets = {"roles": create_multi_select(iterable=Role.objects.all())}
+        

@@ -34,3 +34,35 @@ function showFoundArtist(id) {
   $(".found-artist-section").css("display","block");
   $("#found_pk").attr("href", `/artist/${id}`)
 }
+
+function updateSelection(x) {
+  const item = `<li class="selected-item" onclick="deleteItem(this)">${x}</li>`
+  if (!checkItem(x)) {
+    $(".selected-list").append(item);
+  };
+  addSeletedItems();
+  console.log($("#id_subgenres").val());
+}
+
+function checkItem(val) {
+  let itemExists = false;
+  $(".selected-list li").each( function() {
+    if ($(this).text() === val) {
+      itemExists = true;
+      return itemExists;
+    }
+  });
+  return itemExists;
+}
+
+function deleteItem(x) {
+  $(x).remove();
+}
+
+function addSeletedItems() {
+  let items = [];
+  $(".selected-list li").each(function(){
+    items.push($(this).text());
+  });
+  $("#id_subgenres").val(items);
+}

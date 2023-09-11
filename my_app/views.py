@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView
 from django.views.generic.edit import CreateView
-from app_management.models import Album, Artist, MetalHead
+from app_management.models import Album, Artist, Member
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from django.contrib.auth.views import LoginView, LogoutView
 from app_management.forms import RatingForm
@@ -96,4 +96,16 @@ class UserView(DetailView):
         if metalhead.votes:
             context["rated_albums"] = get_rated_albums(user_id=int(metalhead.pk))
         return context
+    
+
+class MemberView(DetailView):
+    template_name = "my_app/show_member.html"
+    model = Member
+    context_object_name = "member"
+
+
+class MemberList(ListView):
+    template_name = "my_app/member_list.html"
+    model = Member
+    context_object_name = "members"
         

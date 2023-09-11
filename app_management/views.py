@@ -2,12 +2,12 @@ from typing import Any, Dict
 from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views import View
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic import TemplateView
-from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, AlbumContributorForm
-from .models import Artist, Album, Role, Member, AlbumContributor
+from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, ContributionForm, choiceArtist
+from .models import Artist, Album, Role, Member, Contributions
 from my_metal_code.decorators import show_errors, handle_img_from_form, update_session, presave_edit_form
 from my_metal_code import decorators
 from django.contrib.auth import login
@@ -69,7 +69,23 @@ class NewUserView(CreateView):
         user = form.save()
         login(self.request, user)
         return response
+
+
+class EditMember(UpdateView):
+    template_name = "edit/edit_member.html"
+    model = Member
+    form_class = MemberForm
+
+    @presave_edit_form()
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        return super().form_valid(form)
     
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        print(self.request.POST)
+        return super().post(request, *args, **kwargs)
+    
+    def get_success_url(self) -> str:
+        return reverse("member", args=[int(self.get_object().pk)])
 
 class EditArtist(UpdateView):
     template_name = "edit_artist.html"
@@ -126,8 +142,25 @@ class AddMember(CreateView):
     success_url = reverse_lazy("home")
 
 
-class addContribAlbum(CreateView):
+class AddContribution(CreateView):
     template_name = "add/add_album_contrib.html"
-    model = AlbumContributor
-    form_class = AlbumContributorForm
+    model = Contributions
+    form_class = ContributionForm
     success_url = reverse_lazy("home")
+
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        kwargs = super(AddContribution, self).get_form_kwargs()
+        kwargs["artist_id"] = self.request.get_full_path().split("/")[-1:][0]
+        return kwargs
+    
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return super().post(request, *args, **kwargs)
+
+
+class SelectArtist(FormView):
+    template_name = "choose_artist.html"
+    form_class = choiceArtist
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return redirect("add-contrib", pk=int(self.request.POST["artist"]))
+    

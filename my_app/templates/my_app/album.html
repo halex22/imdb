@@ -36,7 +36,11 @@
                     <button type="button" onclick="showToAdd()" id="add-vote" class="btn btn-secondary">Rate this album</button>
                     <button type="button" onclick="showToAdd()" id="dont-vote" class="hidden-element btn btn-danger">Cancel</button>
                 {% endif %}                
-            </div> 
+            </div>
+        {% else %}
+        <div class="action-to-rate">
+            <p>If you want to rate this album <a href="{% url 'log-in' %}">Log in</a> or <a href="{% url 'register' %}">Register</a> if you don't have an account</p>
+        </div> 
         {% endif %}
     
         <div class="rate-this-album hidden-element" id="rate_form">
@@ -96,18 +100,18 @@
     </div>   
 </div>
 
-<div class="album-contrib">
+<div class="album-contrib row">
     {% for contrib in album.contributors.all %}
-    {% ifchanged  %}
-    <h4>{{ contrib }}</h4>
-    <div class="contribs">
-        <ul>
-            {% for album_contributor in contrib.albumcontributor_set.all %}
-            <li>{{ album_contributor.role }}</li>
-            {% endfor %}
-        </ul>
+    <div class="single-contrib col">
+        <h4><a href="{% url 'member' pk=contrib.member.id %}">{{ contrib.member }}</a></h4>
+        <div class="contribs">
+            <ul>
+                {% for role in contrib.roles.all %}
+                <li>{{ role }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    {% endifchanged %}
     {% endfor %}
 </div>
 

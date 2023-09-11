@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+    {% for member in members %}
+    <h3><a href="{% url 'member' pk=member.id %}">{{member}}</a></h3>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
+

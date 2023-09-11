@@ -5,10 +5,11 @@
             {% include "form/text_input.html" %}
         {% elif  field.widget_type == "clearablefile" %}
             {% include "form/file_input.html" %}
+        {% elif  field.widget_type == "selectmultiple" %}
+            {% include "form/select_multi_input.html" with choices=field.field.widget.choices tuple=True %}
         {% else %}
             {{field.label_tag}}
             {{field}}
-            {{field.widget_type}}
         {% endif %}
     {% endfor %}
     <button class="btn btn-primary mb-3" type="submit">

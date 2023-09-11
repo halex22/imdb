@@ -1,0 +1,26 @@
+.member-details {
+    margin-bottom: 2rem;
+}
+
+.albums {
+    margin: 2rem 0;
+}
+
+.mini-pre-album {
+    display: inline;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    
+}
+
+.inner-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.inner-inner {
+    text-align: center;
+    margin: 0.5rem 0;
+}

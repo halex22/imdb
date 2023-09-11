@@ -9,5 +9,7 @@ urlpatterns = [
     path("artist/<int:pk>", view=views.SingleArtist.as_view(), name="artist"),
     path("log-in", view=views.Login.as_view(), name="log-in"),
     path("log-out", view=views.Logout.as_view(), name="log-out"),
-    path("profile/<int:pk>", view=views.UserView.as_view(), name="user-profile")
+    path("profile/<int:pk>", view=views.UserView.as_view(), name="user-profile"),
+    path("artist-member/<int:pk>", view=views.MemberView.as_view(), name="member"),
+    path("all-groups-members", view=views.MemberList.as_view(), name="member-list")
 ]

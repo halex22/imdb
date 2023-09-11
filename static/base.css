@@ -25,3 +25,21 @@ body {
 button {
     margin-top: 2rem;
 }
+
+.main-block-container {
+    margin: 2rem 4rem;
+}
+
+.show-selection {
+    margin-top: 1rem;
+
+}
+
+.selected-item {
+    display: inline;
+    margin-right: 0.5rem;
+    padding: 0.2rem;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
