@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block js_file %}{% endblock js_file %}
+{% block js_file %}
+    <script src="{% static 'form.js' %}"></script>
+{% endblock js_file %}
 {% block css_file %}
 <link rel="stylesheet" href="{% static 'app_management/css/add_role.css' %}">
 {% endblock css_file %}

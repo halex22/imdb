@@ -1,11 +1,9 @@
-from django.shortcuts import render
 from typing import Any, Dict
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView
-from django.views.generic.edit import CreateView
 from app_management.models import Album, Artist, Member
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from django.contrib.auth.views import LoginView, LogoutView
@@ -24,6 +22,9 @@ class Home(TemplateView):
         if self.request.user.is_authenticated:
             if "fav_artists" in self.request.session:
                 context["fav_artists"] = get_fav_artists(self.request.session["fav_artists"])
+        context["latest_artist"] = Artist.objects.all().order_by("-added_date")[:3]
+        context["latest_albums"] = Album.objects.all().order_by("-added_date")[:3]
+        context["latest_members"] = Member.objects.all()[:3]
         return context
     
 

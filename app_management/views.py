@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.forms.models import BaseModelForm
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
@@ -19,6 +19,10 @@ User = get_user_model()
 
 class HomeView(TemplateView):
     template_name = "index.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class NewAlbumView(CreateView):
@@ -85,19 +89,27 @@ class EditMember(UpdateView):
         return super().post(request, *args, **kwargs)
     
     def get_success_url(self) -> str:
-        return reverse("member", args=[int(self.get_object().pk)])
+        member = self.get_object()
+        return reverse("member", args=[member.pk, member.slug])
 
 class EditArtist(UpdateView):
     template_name = "edit_artist.html"
     model = Artist
     form_class = NewArtistForm
 
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return super().post(request, *args, **kwargs)
+    
+    def form_invalid(self, form: BaseModelForm) -> HttpResponse:
+        return super().form_invalid(form)
+
     @presave_edit_form()
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         return super().form_valid(form)
-
+    
     def get_success_url(self) -> str:
-        return reverse("artist", args=[int(self.get_object().pk)])
+        artist = self.get_object()
+        return reverse("artist", args=[artist.pk, artist.slug])
     
 
 class EditAlbum(UpdateView):
@@ -111,14 +123,18 @@ class EditAlbum(UpdateView):
         return super().form_valid(form)
     
     def get_success_url(self) -> str:
-        return reverse("album", args=[int(self.get_object().pk)])
-    
+        album = self.get_object()
+        return reverse("album", args=[album.pk, album.artist.slug, album.slug])
+
 
 class VoteCollector(View):
 
     @decorators.rate_album
     def post(self, *args, **kwargs):
-        return redirect("album", pk=int(self.request.POST["album_id"]))
+        album = get_object_or_404(Album, pk=int(self.request.POST["album_id"]))
+        return redirect("album", pk=album.pk,
+                        artist_slug=album.artist.slug,
+                        album_slug = album.slug) # artist_slug, album_slug
     
 
 class ArtistChecker(View):

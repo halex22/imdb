@@ -29,7 +29,7 @@ class NewForm(ModelForm):
     class Meta:
         model = Album
         # fields = "__all__"
-        exclude = ["added_date", "n_votes", "rating"]
+        exclude = ["added_date", "n_votes", "rating", "slug"]
         labels = {
             "name": "Name of the album",
             "img": "Album cover"
@@ -55,7 +55,7 @@ class NewArtistForm(ModelForm):
     class Meta:
         model = Artist
         fields = "__all__"
-        exclude = ["added_date"]
+        exclude = ["added_date", "slug"]
 
         labels = {
             "name": "Band Name",
@@ -126,9 +126,10 @@ class MemberForm(ModelForm):
     class Meta:
         model = Member
         fields = "__all__"
+        exclude = ["slug"]
         text_widget = TextInput(attrs={"class": "form-element"})
         select_widget = create_multi_select(iterable=Artist.objects.all())
-        labels = {"birth_date": "Date of Birth"}
+        labels = {"birth_date": "Date of Birth", "active_on": "Current active on"}
 
         widgets = {
             "first_name": text_widget,
@@ -145,8 +146,9 @@ class ContributionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         artist_id = kwargs.pop('artist_id')
         artist = Artist.objects.get(pk=int(artist_id))
+        all_members = artist.former_groups.all().union(artist.active_groups.all())
         super(ContributionForm, self).__init__(*args, **kwargs)
-        self.fields["member"].widget = create_select(iterable=artist.active_groups.all())
+        self.fields["member"].widget = create_select(iterable=all_members)
         self.fields["album"]. widget = create_select(iterable=artist.albums.all())
 
     class Meta:

@@ -41,6 +41,11 @@ def handle_img_from_form(view_method):
 
     return decorator
 
+def adjust_edit_form(view_method):
+    def decorator(self, request: HttpRequest, *args, **kwargs):
+        form = self.get_form()
+        instance = self.get_object()
+
 
 def presave_edit_form(empty_allowed_field=None):
     def decorator(view_method):

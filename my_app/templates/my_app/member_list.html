@@ -1,11 +1,37 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'member.css' %}">  
+{% endblock css_file %}
+{% block title %}All band members{% endblock title %}
 {% block content %}
-<ul>
-    {% for member in members %}
-    <h3><a href="{% url 'member' pk=member.id %}">{{member}}</a></h3>
-    {% endfor %}
-</ul>
+<div class="main-container">
+    <div class="member-list-container row">
+        {% for member in members %}
+        <div class="member-container col-lg-4 col-sm-6">
+            <h3><a href="{% url 'member' pk=member.id slug=member.slug %}">{{member}}</a></h3>
+            <img
+            {% if member.img %} src="{{member.img.url}}" {% else %} src=""  {% endif %}
+            alt="{{member}}" class="member-pic">
+            {% if member.active_on.all %}
+                <h5>Active group: </h5>
+                {% for group in member.active_on.all %}
+                    <h6><a href="{% url "artist" pk=group.pk slug=group.slug %}">{{group.name|title}}</a></h6>
+                {% endfor %}
+            {% endif %}
+            {% if member.former_on.all %}
+                <h5>Former group: </h5>
+                {% for group in member.former_on.all %}
+                    <h6><a href="{% url "artist" pk=group.pk slug=group.slug %}">{{group.name|title}}</a></h6>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
 
 {% endblock content %}
 

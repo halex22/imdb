@@ -21,3 +21,10 @@ def has_voted(user_votes: dict, album_id:  int) -> bool:
 @register.filter(name="get_user_rate")
 def get_user_rate(user_votes: Dict[str, float], album_id:  int) -> float:
     return user_votes[str(album_id)]
+
+
+@register.filter(name="clean_pre_values")
+def clean_pre_values(pre_values: str) -> str:
+    txt = pre_values.replace("[","").replace("]","")
+    txt = txt.replace('"','').replace(", ", ",")
+    return txt 

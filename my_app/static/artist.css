@@ -42,3 +42,8 @@ li {
     display: grid;
     grid-template-columns: 2fr 3fr;
 }
+
+.album-cover {
+    display: flex;
+    justify-content: center;
+}

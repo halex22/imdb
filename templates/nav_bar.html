@@ -30,6 +30,18 @@
                 </div>
             </a>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'member-list' %}">
+                <div class="logo">
+                    <i class="fa-solid fa-person-burst"></i>
+                </div>
+                <div class="nav-item-text">
+                    <span class="nav-element">Members</span>
+                </div>
+            </a>
+        </li>
+
         {% if user.is_anonymous %}
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'register' %}">

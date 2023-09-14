@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block js_file %}
+    <script src="{% static 'form.js' %}"></script>
+{% endblock js_file %}
+{% block title%}Edit Member{% endblock title%}
 {% block content %}
 <div class="form-container">
-{% include 'form/base_form.html' with submit_msg='Save Changes'%}
-
+{% include 'form/multi_form.html' with submit_msg='Save Changes' tuple=True%}
 </div>
+
+<script>
+    $(document).ready(()=>{
+        $("#id_nickname").removeAttr("required");
+    });
+</script>
 {% endblock content %}

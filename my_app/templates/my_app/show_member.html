@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'member.css' %}">  
 {% endblock css_file %}
@@ -8,25 +7,43 @@
 
 {% block content %}
 <div class="main-block-container">
+    {% if user.is_authenticated %}
+        <div class="edit">
+            <span><a href="{% url 'edit-member' pk=member.id %}">edit</a></span>
+        </div>
+    {% endif %}
     <div class="member-details row">
         <div class="personal-info col">
             <h3>First name: {{member.first_name}}</h3>
             <h3>Last name: {{member.last_name}}</h3>
             <h4>Nickname: {{member.nickname}}</h4>
+            <h6>Birth date: {{member.birth_date}}</h6>
         </div>
         <div class="personal-img col">
-            <img src="" alt="{{member}}">
+            <img
+            {% if member.img %} src="{{member.img.url}}" {% else %} src=""  {% endif %}
+            alt="{{member}}" class="member-pic">
         </div>
     </div>
 
 
-    <div class="groups">
-        <p>Active member in: </p>
-        {% for group in member.active_on.all %}
-        <h4><a href="{% url 'artist' pk=group.id %}">{{group|title}}</a></h4>
-        {% empty %}
-        <p>Info not available</p>
-        {% endfor %}
+    <div class="groups row">
+        <div class="active col">
+            <h4>Active member: </h4>
+            {% for group in member.active_on.all %}
+                <h4><a href="{% url 'artist' pk=group.id slug=group.slug %}">{{group|title}}</a></h4>
+            {% empty %}
+                <p>Info not available</p>
+            {% endfor %}
+        </div>
+        <div class="former col">
+            <h4>Former member:</h4>
+            {% for group in member.former_on.all %}
+                <h4><a href="{% url 'artist' pk=group.id slug=group.slug %}">{{group|title}}</a></h4>
+            {% empty %}
+                <p>Info not available</p>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="albums">
@@ -39,9 +56,9 @@
                         <img class="mini-pre-album" src="{{ album.album.img.url }}" alt="{{album.album}}">
                     </div>
                     <div class="album-name-container inner-inner">
-                        <h5><a href="{% url 'album' pk=album.album.id %}">{{album.album|title}}</a></h5>
+                        <h5><a href="{% url 'album' pk=album.album.id artist_slug=album.album.artist.slug album_slug=album.album.slug %}">{{album.album|title}}</a></h5>
                     </div>
-                    <div class="roles-container ">
+                    <div class="roles-container">
                         <ul>
                             {% for role in album.roles.all %}
                             <li>{{role|title}}</li>
@@ -52,10 +69,6 @@
             </div>            
         {% endfor %}
         </div>
-    </div>
-
-    <div class="edit">
-        <span><a href="{% url 'edit-member' pk=member.id %}">edit</a></span>
     </div>
 </div>
 {% endblock content %}

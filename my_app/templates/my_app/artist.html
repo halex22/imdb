@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load my_tags %}
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'artist.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
@@ -11,40 +12,51 @@
 
 {% block content %}
     <div class="main-container">
-        <div class="artist-element">
-            <div class="artist-name-options">
-                <h4 id="fav-icon">{% if is_favorite %}🤩{% endif %}</h4><h2>{{artist.name|title}}</h2>
-                {% if user.is_authenticated %}
-                <div class="options">
-                    <span class="edit-delete"><a href="{% url 'edit-artist' pk=artist.id %}">Edit</a></span>
-                    <span class="edit-delete"><a href="#">Delete</a></span> 
+        <div class="l-side">
+            <div class="artist-element">
+                <div class="artist-name-options">
+                    <h4 id="fav-icon">{% if is_favorite %}🤩{% endif %}</h4><h2>{{artist.name|title}}</h2>
+                    {% if user.is_authenticated %}
+                    <div class="options">
+                        <span class="edit-delete"><a href="{% url 'edit-artist' pk=artist.id %}">Edit</a></span>
+                        <span class="edit-delete"><a href="#">Delete</a></span> 
+                    </div>
+                    {% endif %}                           
                 </div>
-                {% endif %}                           
+                <div class="subgenres">
+                    <ul class="subgenre-list">
+                        {% if artist.subgenres %}
+                            {% for subgenre in artist.subgenres %}
+                                <li class="subgenre-item">{{subgenre|title}}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="artist-img">
+                    <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid">
+                </div>
             </div>
-            <div class="subgenres">
-                <ul class="subgenre-list">
-                    {% for subgenre in artist.subgenres %}
-                        <li class="subgenre-item">{{subgenre|title}}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="artist-img">
-                <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid">
-            </div>
-            <div class="albums-container row">
-                {% for album in artist.albums.all %}
-                    <div class="album-info col">
-                        <div class="album-main-info">
-                            <div class="album-text-info">
-                                <h3><a href="{% url 'album' pk=album.id %}">{{album|title}}</a></h3>
-                            </div>
-                            <div class="album-cover">
-                                <img src="{{album.img.url}}" alt="{{album}}" class="mini-pre-album">
-                            </div>
-                        </div>                        
-                    </div>                    
-                {% endfor %}
-            </div>
+        </div>
+        <div class="r-side">
+
+        </div>
+        <div class="albums-container row">
+            {% for album in artist.albums.all|dictsort:"released_date" %}
+                <div class="album-info col-md-6">
+                    <div class="album-main-info">
+                        <div class="album-text-info">
+                            <h3>
+                                <a href="{% url 'album' pk=album.id artist_slug=artist.slug album_slug=album.slug %}">{{album|title}}</a>
+                            </h3>
+                            <p>First released: {{album.released_date}}</p>
+                            <h6>rating: <b>{{album.rating|divide:album.n_votes|floatformat}}</b></h6>
+                        </div>
+                        <div class="album-cover">
+                            <img src="{{album.img.url}}" alt="{{album}}" class="mini-pre-album">
+                        </div>
+                    </div>                        
+                </div>                    
+            {% endfor %}
         </div>
     {% include "form/fav_forms/fav_artist.html" %}
     </div>

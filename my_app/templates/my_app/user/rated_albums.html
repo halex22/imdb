@@ -3,8 +3,8 @@
     {% for album in rated_albums %}
         {% spaceless %}
         <li>
-            <a href="{% url 'album' pk=album.pk %}">{{album.name|title}}</a>
-            <span>- rated {{metalhead.votes|get_user_rate:album.id}}</span>
+            <a href="{% url 'album' pk=album.pk artist_slug=album.artist.slug album_slug=album.slug %}">{{album.name|title}}</a>
+            <span> - rated {{metalhead.votes|get_user_rate:album.id}}</span>
         </li>
         {% endspaceless %}
     {% empty %}

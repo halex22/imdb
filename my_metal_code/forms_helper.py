@@ -2,10 +2,12 @@ from django.forms.widgets import Select, SelectMultiple
 from django.db.models.query import QuerySet
 from typing import Dict, List, Union
 
+
 def capitalize_words(name: str) -> str:
     words = [word.capitalize() for word in name.split(" ")]
     cap_name = " ".join(words)
     return cap_name
+
 
 def create_select(iterable: Union[QuerySet, List[str]], attrs:Dict[str,str] = None) -> Select:
     if not attrs:

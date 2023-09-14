@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Any
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, text
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime
@@ -12,6 +12,7 @@ class MetalHead(AbstractUser):
 
     votes = models.JSONField(default=dict, blank=True, null=False)
     objects = UserManager()
+    
     def __str__(self) -> str:
         return super().__str__()
 
@@ -34,7 +35,13 @@ class Artist(models.Model):
         )
     ], null=True, blank=True)
     img = models.ImageField(upload_to="images", blank=True, null=True)
-    subgenres = models.JSONField(null=True)
+    subgenres = models.JSONField(null=True, blank=True)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = text.slugify(self.name)
+        super(Artist, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -45,8 +52,15 @@ class Member(models.Model):
     last_name = models.CharField(max_length=50, default="", blank=True)
     nickname = models.CharField(max_length=30, default="", blank=True)
     birth_date = models.DateField()
-    active_on = models.ManyToManyField(Artist, related_name="active_groups")
+    active_on = models.ManyToManyField(Artist, related_name="active_groups", blank=True)
     former_on = models.ManyToManyField(Artist, related_name="former_groups", blank=True)
+    slug = models.SlugField(blank=True)
+    img = models.ImageField(upload_to="images", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = text.slugify(self.__str__())
+        super(Member, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
@@ -63,9 +77,14 @@ class Album(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='albums')
     n_votes = models.IntegerField(default=0)
     rating = models.FloatField(default=0.0, validators=[
-        MinValueValidator(limit_value=0, message="The lowest rate is 0"),
-        MaxValueValidator(limit_value=10, message="The highest rate is 10")
+        MinValueValidator(limit_value=0, message="The lowest rate is 0")
     ])
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = text.slugify(self.name)
+        super(Album, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
@@ -90,7 +109,7 @@ class Contributions(models.Model):
 def artist_pre_save(sender, instance, **kwargs):
     instance.name = instance.name.lower()
     instance.genre = instance.genre.lower()
-    instance.subgenres = [subgenre.lower() for subgenre in instance.subgenres ]
+    # instance.subgenres = [subgenre.lower() for subgenre in instance.subgenres ]
 
 
 @receiver(models.signals.pre_save, sender=Album)

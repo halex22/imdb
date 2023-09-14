@@ -14,7 +14,7 @@
             {% for artist in artists %}
             <div class="artist-element col-sm-12 col-md-6 col-lg-4 col-xxl-3">
                 <div class="artist-name">
-                    <h3><a href="{% url 'artist' pk=artist.id %}">{{artist.name|title}}</a></h3>
+                    <h3><a href="{% url 'artist' pk=artist.id slug=artist.slug %}">{{artist.name|title}}</a></h3>
                 </div>
                 <div class="artist-img">
                     <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid img-thumbnail">

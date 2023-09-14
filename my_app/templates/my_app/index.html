@@ -2,6 +2,9 @@
 {% load static %}
 {% block css_file %}
   <link rel="stylesheet" href="{% static 'index.css'%}">
+  <link rel="stylesheet" href="{% static 'album.css'%}">
+  <link rel="stylesheet" href="{% static 'member.css' %}"> 
+
 {% endblock css_file %}
 {% block title %}Welcome Page{% endblock title %}
 
@@ -16,6 +19,22 @@
     <h1>Hello world</h1>
   {% endif %}
 
-  <h3><a href="{% url 'member-list' %}">see all members</a></h3>
+  <div class="latest-albums row">
+    {% for album in latest_albums %}
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        {% include "my_app/single_templates/s_album.html" %}
+      </div>
+    {% endfor %}
+  </div>
 
+  <div class="latest-artist row">
+    {% for member in latest_members %}
+      {% include "my_app/single_templates/s_member.html" %}
+    {% endfor %}
+  </div>
+  <div class="latest-artist">
+    {{latest_artist}}
+  </div>
+  
+  
 {% endblock content %}

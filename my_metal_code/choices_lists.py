@@ -52,6 +52,7 @@ metal_instruments = [
     "Drums",
     "Vocals",
     "Keyboards/Synthesizers",
+    "Backing Vocals",
     "Bass Drum Pedal",
     "Electric Bass",
     "Lead Guitar",

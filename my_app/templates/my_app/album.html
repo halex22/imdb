@@ -15,7 +15,7 @@
     <div class="l-side col-md-6">
         <div class="name-artist">
             <h3 class="album-name">{{album.name|title}}</h3> <span>by </span>
-            <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id %}">{{album.artist|title}}</a></h4>
+            <h4 class="artist-name"><a href="{% url 'artist' pk=album.artist.id slug=album.artist.slug %}">{{album.artist|title}}</a></h4>
         </div>
         
         {% if user.is_staff %}
@@ -23,7 +23,7 @@
         {% endif %}
         
         <div class="rating-container">
-            <h6>rating: <b>{{album.rating|divide:album.n_votes}}</b></h6>
+            <h6>rating: <b>{{album.rating|divide:album.n_votes|floatformat}}</b></h6>
             <h6 class="n-votes">Total votes: <b>{{album.n_votes}}</b></h6>
         </div>
         {% if user.is_authenticated %}
@@ -65,8 +65,16 @@
                         {% for other_album in album.artist.albums.all  %}
                         {% if other_album.name != album.name %}
                         <li>
-                            <a href="{% url 'album' pk=other_album.pk %}">{{other_album.name|title}}</a>
-                            <img src="{{other_album.img.url}}" alt="{{other_album}}" class="other-album-img">
+                            <div class="other-album-container">
+                                <div class="another-link-container">
+                                    <a href="{% url 'album' pk=other_album.pk artist_slug=other_album.artist.slug album_slug=other_album.slug %}">
+                                        {{other_album.name|title}}
+                                    </a>
+                                </div>
+                                <div class="another-img-container">
+                                    <img src="{{other_album.img.url}}" alt="{{other_album}}" class="other-album-img">
+                                </div>
+                            </div>                            
                         </li>
                         {% endif %}
                     {% endfor %}
@@ -103,11 +111,16 @@
 <div class="album-contrib row">
     {% for contrib in album.contributors.all %}
     <div class="single-contrib col">
-        <h4><a href="{% url 'member' pk=contrib.member.id %}">{{ contrib.member }}</a></h4>
+        <h4><a href="{% url 'member' pk=contrib.member.id slug=contrib.member.slug %}">{{ contrib.member }}</a></h4>
+        <div class="personal-img">
+            <img
+            {% if contrib.member.img %} src="{{contrib.member.img.url}}" {% else %} src=""  {% endif %}
+            alt="{{contrib.member}}" class="member-pic">
+        </div>
         <div class="contribs">
             <ul>
                 {% for role in contrib.roles.all %}
-                <li>{{ role }}</li>
+                <li>{{ role|title }}</li>
                 {% endfor %}
             </ul>
         </div>

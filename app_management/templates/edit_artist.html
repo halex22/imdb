@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% load my_tags %}
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'app_management/css/forms_style.css' %}">
 {% endblock css_file %}
-{% block js_file %}<script src="{% static 'app_management/js/add_artist.js' %}"></script>{% endblock js_file %}
+{% block js_file %}
+    <script src="{% static 'form.js' %}"></script>
+{% endblock js_file %}
     
 {% block title %}Edit - {{form.name.value|title}} {% endblock title %}
 

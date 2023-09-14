@@ -43,3 +43,7 @@ button {
     color: white;
     border-radius: 10px;
 }
+
+.hidden {
+    display: none;
+}

@@ -68,6 +68,40 @@ a {
     margin-left: 0.5rem;
 }
 
+.other-album-container{
+    margin: 0.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+
+.contribs li {
+    list-style-type: none;
+    display: inline;
+    margin: 0 0.2rem;
+    color: white;
+    background-color: black;
+    padding: 0.25rem;
+    border-radius: 10px;
+}
+
+.contribs {
+    display: flex;
+    justify-content: center;
+}
+
+.member-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+}
+
+.single-contrib {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 /* album list styles */
 .main-container {
