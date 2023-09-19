@@ -2,14 +2,30 @@
 {% load static %}
 {% block css_file %}
     <link rel="stylesheet" href="{% static 'album.css'%}">
+    <link rel="stylesheet" href="{% static 'search.css'%}">
 {% endblock css_file %}
+{% block js_file %}
+    <script src="{% static 'fnct.js' %}"></script>
+    <script src="{% static 'search.js' %}"></script>
+{% endblock js_file %}
 {% block title %}Albums{% endblock title %}
 
 {% block content %}
-<div class="main-container">
-    <div class="album-list row">
-        {% for album in albums %}
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+<div class="main-container outer-box">
+    {% include "my_app/search_optn.html" with target="albums" %}
+    <div class="album-list row align-items-stretch">
+
+        {% if key_search %}
+            <p>{{key_search|length}} {% if key_search|length > 1 %} results {% else %} result{% endif %} found</p>
+            {% for album in key_search %}
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 single-item-album">
+                {% include "my_app/single_templates/s_album.html" %}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for album in albums|dictsort:"name" %}
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 single-item-album">
             {% include "my_app/single_templates/s_album.html" %}
         </div>
         {% endfor %}

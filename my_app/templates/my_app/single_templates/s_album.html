@@ -1,5 +1,5 @@
-<div class="single-album ">
-    <div class="list-album-name">
+<div class="single-album two-borders card-body" id="main-album-container">
+    <div class="list-album-name ">
         <h3>
             <a href="{% url 'album' pk=album.id artist_slug=album.artist.slug album_slug=album.slug %}">
                 {% if album.name|length < 25  %}
@@ -10,14 +10,26 @@
             </a>
         </h3>
     </div>
-    <div class="cover-container">
+    <div class="cover-container" >
         <img class="mini-pre-album" src="{{album.img.url}}" alt="{{album.name}}">
     </div>
-    <div class="list-artist-name"><h4>{{album.artist.name|title}}</h4></div>
+    <div class="list-artist-name">
+        <a href="{% url 'artist' pk=album.artist.pk slug=album.artist.slug %}">
+            <h4>{{album.artist.name|title}}</h4>
+        </a>
+    </div>
     <div class="genres">
         {% for subgenre in album.artist.subgenres %}
-            <span>{{subgenre|title}}</span>
+            <span>{% if forloop.counter0 < 2 %} {{subgenre|title}}{% endif %}</span>
         {% endfor %}
     </div>
     
+    <!-- test margin -->
+    <div class="margin-div-container">
+        <div class="margin-div"></div>
+        <div class="margin-div center center-h"></div>
+        <div class="margin-div"></div>
+    </div>
+
 </div>
+

@@ -26,7 +26,7 @@
                 <div class="subgenres">
                     <ul class="subgenre-list">
                         {% if artist.subgenres %}
-                            {% for subgenre in artist.subgenres %}
+                            {% for subgenre in artist.genres.all %}
                                 <li class="subgenre-item">{{subgenre|title}}</li>
                             {% endfor %}
                         {% endif %}

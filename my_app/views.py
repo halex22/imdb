@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django import http
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
@@ -6,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, ListView
 from app_management.models import Album, Artist, Member
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
+from my_metal_code.query_filters import QueryManager
 from django.contrib.auth.views import LoginView, LogoutView
 from app_management.forms import RatingForm
 from django.contrib.auth import get_user_model
@@ -33,6 +35,10 @@ class AlbumsList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.GET:
+            query = QueryManager(self.request.GET.copy(), context, Album)
+            query.update_context()
+            return query.context
         context["albums"] = Album.objects.all()
         return context
     
@@ -48,10 +54,17 @@ class SingleAlbum(DetailView):
         return context
 
 
-class ArtistList(ListView):
+class ArtistList(TemplateView):
     template_name = "my_app/artist_list.html"
-    model = Artist
-    context_object_name = "artists"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        if self.request.GET:
+            query = QueryManager(self.request.GET.copy(), context, Artist)
+            query.update_context()
+            return query.context
+        context["artists"] = Artist.objects.all()
+        return context
 
 
 class SingleArtist(DetailView):
@@ -105,8 +118,15 @@ class MemberView(DetailView):
     context_object_name = "member"
 
 
-class MemberList(ListView):
+class MemberList(TemplateView):
     template_name = "my_app/member_list.html"
-    model = Member
-    context_object_name = "members"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        if self.request.GET:
+            query = QueryManager(self.request.GET.copy(), context, Member)
+            query.update_context()
+            return query.context
+        context["members"] = Member.objects.all()
+        return context
         

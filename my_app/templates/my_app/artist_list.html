@@ -2,13 +2,35 @@
 {% load static %}
 {% block css_file %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="{% static 'search.css'%}">
 {% endblock css_file %}
+
+{% block js_file %}
+    <script src="{% static 'fnct.js' %}"></script>
+    <script src="{% static 'search.js' %}"></script>
+{% endblock js_file %}
 
 {% block title %}Artist List{% endblock title %}
 
 {% block content %}
 <div class="main-container">
-    <h2>All artist</h2>
+    {% include "my_app/search_optn.html" with target="artists" %}
+
+        {% if key_search %}
+            <p>{{key_search|length}} {% if key_search|length > 1 %} results {% else %} result{% endif %} found</p>
+            <div class="list-container row">
+                {% for artist in key_search %}
+                <div class="artist-element col-sm-12 col-md-6 col-lg-4 col-xxl-3">
+                    <div class="artist-name">
+                        <h3><a href="{% url 'artist' pk=artist.id slug=artist.slug %}">{{artist.name|title}}</a></h3>
+                    </div>
+                    <div class="artist-img">
+                        <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid img-thumbnail">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="list-container row">
             {% for artist in artists %}
@@ -20,7 +42,7 @@
                     <img src="{{artist.img.url}}" alt="{{artist.name}} img" class="img-fluid img-thumbnail">
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         </div>
 
 </div>

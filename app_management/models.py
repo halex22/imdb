@@ -1,11 +1,12 @@
 from __future__ import annotations
+from collections.abc import Iterable
 from typing import Any
 from django.db import models
 from django.utils import timezone, text
 from django.dispatch import receiver
 from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime
-from django.contrib.auth.models import AbstractUser, UserManager, User
+from django.contrib.auth.models import AbstractUser, UserManager
 
 
 class MetalHead(AbstractUser):
@@ -15,6 +16,18 @@ class MetalHead(AbstractUser):
     
     def __str__(self) -> str:
         return super().__str__()
+
+class Genre(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        self.name = self.name.lower()
+        self.slug = text.slugify(self.name)
+        return super(Genre, self).save(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class Artist(models.Model):
@@ -36,6 +49,7 @@ class Artist(models.Model):
     ], null=True, blank=True)
     img = models.ImageField(upload_to="images", blank=True, null=True)
     subgenres = models.JSONField(null=True, blank=True)
+    genres = models.ManyToManyField(Genre, related_name="genres", blank=True)
     slug = models.SlugField(blank=True)
 
     def save(self, *args, **kwargs):
@@ -95,6 +109,7 @@ class Role(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+    
     
 class Contributions(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="contributions")

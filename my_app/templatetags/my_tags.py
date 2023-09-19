@@ -25,6 +25,7 @@ def get_user_rate(user_votes: Dict[str, float], album_id:  int) -> float:
 
 @register.filter(name="clean_pre_values")
 def clean_pre_values(pre_values: str) -> str:
-    txt = pre_values.replace("[","").replace("]","")
-    txt = txt.replace('"','').replace(", ", ",")
-    return txt 
+    pre_values = [ str(_) for _ in pre_values]
+    # txt = pre_values.replace("[","").replace("]","")
+    # txt = txt.replace(", ", ",")
+    return ",".join(pre_values)

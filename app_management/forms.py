@@ -3,7 +3,7 @@ from django.forms import Form, NumberInput, ModelForm, FloatField, IntegerField,
 from django.forms.widgets import TextInput, Select, Input, SelectMultiple, ClearableFileInput, PasswordInput, EmailInput
 from my_metal_code.choices_lists import metal_subgenres, metal_instruments
 from my_metal_code.forms_helper import create_select, create_multi_select
-from .models import Artist, Album, MetalHead, Role, Member, Contributions
+from .models import Artist, Album, MetalHead, Role, Member, Contributions, Genre
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth import get_user_model
 
@@ -53,9 +53,10 @@ class NewForm(ModelForm):
 
 class NewArtistForm(ModelForm):
     class Meta:
+        query_set = Genre.objects.all()
         model = Artist
         fields = "__all__"
-        exclude = ["added_date", "slug"]
+        exclude = ["added_date", "slug", "subgenres"]
 
         labels = {
             "name": "Band Name",
@@ -63,7 +64,8 @@ class NewArtistForm(ModelForm):
             "fundation_date": "Fundation Year",
             "img": "Band Image",
             "active_members": "Active Members",
-            "all_members": "All Members"
+            "all_members": "All Members",
+            "genres": "Band Genres"
         }
 
         widgets = {
@@ -71,6 +73,7 @@ class NewArtistForm(ModelForm):
             # "genre":create_select(iterable=metal_subgenres),
             "subgenres": create_multi_select(iterable=metal_subgenres),
             "img": ClearableFileInput(attrs={"accept": "image/*"}),  # Add this line for the file input
+            "genres": create_multi_select(iterable=query_set)
         }
 
 

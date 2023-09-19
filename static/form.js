@@ -1,8 +1,9 @@
 $(document).ready(() => {
-  const preValues = $(".edit-values").text().split(",");
+  const preValues = $("#pre-values").val().split(",");
   if (preValues.length > 1) {
     const selectID = $("select").attr("id");
-    preValues.forEach(element => {
+    const labels = changeNumberToLabel(selectID, preValues)
+    labels.forEach(element => {
       let item = createItemText(titleCase(element));
       $(`.${selectID}-selected-list`).append(item);
     });
@@ -10,6 +11,17 @@ $(document).ready(() => {
     toggleHelpText(selectID);
   }
 })
+
+function changeNumberToLabel(parentID, preValues) {
+  const optionTags = $(`#${parentID} option`);
+  let foundLabels = []
+  optionTags.each(function() {
+    if (preValues.includes($(this).attr("value"))) {
+      foundLabels.push($(this).text())
+    }
+  })
+  return foundLabels
+}
 
 function updateSelection(y) {
   // y is the selected option
@@ -21,6 +33,7 @@ function updateSelection(y) {
     $(`.${parentID}-selected-list`).append(item);
   };
   addSeletedItems(parentID);
+  toggleHelpText(parentID);
 }
 
 function createItemText (txt) {
@@ -71,13 +84,14 @@ function titleCase(name) {
   return upperWords.join(" ")
 }
 
+
+
 function toggleHelpText(selectID){
-  const text = $(".help-item-text");
-  if ($(`#${selectID}`).val().length >= 1) {
+  const text = $(`.${selectID}-help-item-text`);
+  if ($(`#${selectID}`).val().length > 0) {
     text.removeClass("hidden");
   }
   else {
     text.addClass("hidden");
   }
-  console.log()
 }

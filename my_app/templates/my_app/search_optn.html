@@ -1,0 +1,48 @@
+
+<form action="/{{target}}">
+    <label for="search-query"></label>
+    <input class="form-control me-2" name="search-query" type="search" placeholder="Search..." aria-label="Search">
+</form>
+
+<form action="/{{target}}">
+
+    <div class="filters">
+
+        <span>Order By:</span>
+        {% if target == "all-groups-members" %}
+        <div class="input-container">
+            <input type="checkbox" name="slug-order" id="slug-order" onclick="filterOptn(this)">
+            <label for="slug-order">Z-A</label>
+        </div>
+        <div class="input-container">
+            <input type="checkbox" name="birth-date" id="birth-date" onclick="filterOptn(this)">
+            <label for="birth-date">Age (Old-Young)</label>
+        </div>
+        {% else %}
+        <div class="input-container">
+            <input type="checkbox" name="alphabet-order" id="alphabet-order" onclick="filterOptn(this)">
+            <label for="alphabet-order">Z-A</label>
+        </div>
+        <div class="input-container">
+            <input type="checkbox" name="new-order" id="new-order" onclick="filterOptn(this)">
+            <label for="new-order">Last added</label>
+        </div>
+        {% endif %}
+        {% if target == "albums" %}
+        <div class="input-container">
+            <input type="checkbox" name="most-rated" id="most-rated" onclick="filterOptn(this)">
+            <label for="most-rated">Most rated</label>
+        </div>  
+        {% endif %}        
+        <button type="submit" class="btn btn-success">Apply</button>
+    
+        <div class="selected-filters ">
+            <span class="order-span">Filter order:</span>
+            <ol id="select-orderd-list"></ol>
+        </div>
+    </div>
+</form>
+
+<hr>
+
+
