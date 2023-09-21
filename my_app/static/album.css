@@ -103,19 +103,14 @@ a {
     align-items: center;
 }
 
+.submit-btn {
+    margin-left: 1rem;
+}
+
 /* album list styles */
 .main-container {
     margin: 0.5rem 1rem;
 }
-
-/* .outer-box {
-    border: 3px solid rgb(169, 169, 169);
-    border-radius: 5px;
-} */
-
-/* .album-list {
-    padding: 1rem 2rem;
-} */
 
 .list-album-name {
     border-bottom: 16px;

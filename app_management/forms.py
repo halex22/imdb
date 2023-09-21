@@ -99,7 +99,8 @@ class NewUserForm(ModelForm):
 
 class RatingForm(Form):
     
-    rating = FloatField(max_value=10, min_value=1, help_text="rate this album in the scale of 1 to 10")
+    rate = FloatField(max_value=10, min_value=1, help_text="rate this album in the scale of 1 to 10", required=True,
+                        widget=Input(attrs={"type":"number", "step": "0.01","id": "rate"}))
     voter_id = IntegerField(min_value=1, required=True)
     album_id = IntegerField(min_value=1, required=True)
 

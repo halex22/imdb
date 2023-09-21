@@ -19,10 +19,18 @@
             <label for="birth-date">Age (Old-Young)</label>
         </div>
         {% else %}
-        <div class="input-container">
-            <input type="checkbox" name="alphabet-order" id="alphabet-order" onclick="filterOptn(this)">
-            <label for="alphabet-order">Z-A</label>
-        </div>
+        {% if alphabet_order %}
+            <div class="input-container">
+                <input type="checkbox" name="reverse-alphabet-order" id="reverse-alphabet-order" onclick="filterOptn(this)">
+                <label for="reverse-alphabet-order">Z - A order</label>
+            </div>
+        {% else %}
+            <div class="input-container">
+                <input type="checkbox" name="alphabet-order" id="alphabet-order" onclick="filterOptn(this)">
+                <label for="alphabet-order">A - Z order</label>
+            </div>
+        {% endif %}
+        
         <div class="input-container">
             <input type="checkbox" name="new-order" id="new-order" onclick="filterOptn(this)">
             <label for="new-order">Last added</label>

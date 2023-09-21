@@ -16,10 +16,18 @@
     {% include "my_app/user/user_welcome.html" %}
   </div>
   {% else %}
-    <h1>Hello world</h1>
+  <div class="hello-world">
+    <h1>Welcome to Internet Metal Database</h1>
+    <p>Here you can rate albums, discover new groups and know more about know more about your favorite artist</p>
+    <p>
+      <a href="{% url "log-in" %}">Login in</a>
+       or create a <a href="{% url "register" %}">new account</a> 
+       to get the best out this this site
+    </p>    
+  </div>
   {% endif %}
 
-  <div class="index-album-container">
+  <div class="index-list-container">
     <h2>Latest Albums</h2>
     <div class="latest-albums row">
       {% for album in latest_albums %}
@@ -28,15 +36,17 @@
         </div>       
       {% endfor %}
     </div>
+    <p class="see-all-link"><a href="{% url 'albums' %}">see more...</a></p>
   </div>
 
-  <div class="index-member-container">
+  <div class="index-list-container">
     <h3>Latest Group Members</h3>
     <div class="latest-member row">
       {% for member in latest_members %}
         {% include "my_app/single_templates/s_member.html" %}
       {% endfor %}
     </div>
+    <p class="see-all-link"><a href="{% url 'member-list' %}">see more...</a></p>
   </div>
 
   <div class="latest-artist">

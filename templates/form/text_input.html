@@ -4,7 +4,6 @@
         id="{{ field.id_for_label }}"
         name="{{field.name}}"
         required
-        data-mdb-showcounter="true"
         class="form-control {% if field.errors %}is-invalid{% endif %}"
         {% if field.value %} value="{{ field.value|title }}" {% endif %}
     >

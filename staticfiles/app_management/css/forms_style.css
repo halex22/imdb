@@ -1,0 +1,15 @@
+.edit-preview {
+    max-width: 100px;
+}
+
+.form-container {
+    margin: 5rem 15%;
+}
+
+.form-label, .form-select {
+    padding-left: 0.5rem;
+}
+
+button {
+    margin-top: 2rem;
+}

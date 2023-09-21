@@ -1,0 +1,71 @@
+.wrapper {
+    margin-left: 1rem;
+}
+
+#artist-found {
+    color: red;
+
+}
+.found-artist-section {
+    display: none;
+}
+
+.show-selection {
+    margin-top: 1rem;
+
+}
+
+.selected-item {
+    display: inline;
+    margin-right: 0.5rem;
+    padding: 0.2rem;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+}
+
+.header {
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.input-container {
+    margin: 1rem;
+}
+
+.mouse-over-input {
+    border: solid 3px rgb(95, 95, 245);
+}
+
+input {
+    border-radius: 5px;
+    border: solid 2px black;
+    margin-top: 0.5rem;
+}
+
+.invalid input {
+    border-color: brown;
+    border: solid 2px brown;
+    background-color: rgb(230, 183, 183);
+}
+
+ul {
+    list-style: none;
+}
+
+.errorlist li {
+    color: brown;
+}
+
+button {
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.form-container {
+    margin: 0 20% ;
+    line-height: 1rem;
+    border: 3px solid rgb(208, 208, 208);
+    border-radius: 10px;
+    padding: 2rem;
+}

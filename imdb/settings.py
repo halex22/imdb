@@ -1,4 +1,5 @@
 from pathlib import Path
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +14,10 @@ SECRET_KEY = 'django-insecure-nj-u3i-%8@h--(ws3)+sa0e2p0swvu+!x*#1&%zbz!17nn0i1a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    getenv("APP_HOST"),
+    "127.0.0.1"
+]
 
 
 # Application definition

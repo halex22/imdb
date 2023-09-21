@@ -1,10 +1,9 @@
 from typing import Any, Dict
-from django import http
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView
 from app_management.models import Album, Artist, Member
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from my_metal_code.query_filters import QueryManager
@@ -26,7 +25,7 @@ class Home(TemplateView):
                 context["fav_artists"] = get_fav_artists(self.request.session["fav_artists"])
         context["latest_artist"] = Artist.objects.all().order_by("-added_date")[:3]
         context["latest_albums"] = Album.objects.all().order_by("-added_date")[:3]
-        context["latest_members"] = Member.objects.all()[:3]
+        context["latest_members"] = Member.objects.all().order_by("-pk")[:3]
         return context
     
 
@@ -35,6 +34,7 @@ class AlbumsList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["alphabet_order"] = True
         if self.request.GET:
             query = QueryManager(self.request.GET.copy(), context, Album)
             query.update_context()
@@ -49,7 +49,7 @@ class SingleAlbum(DetailView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["rate_form"] = RatingForm()
+        context["form"] = RatingForm()
         context["message"] = messages.get_messages(self.request)
         return context
 

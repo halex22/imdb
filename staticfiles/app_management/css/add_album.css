@@ -1,0 +1,28 @@
+.artist option {
+    text-transform: capitalize;
+}
+
+.form-container {
+    margin: 0 20% ;
+    line-height: 1rem;
+    border: 3px solid rgb(208, 208, 208);
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+#id_released_date {
+    margin-bottom: 1.5rem;
+}
+
+#id_img {
+    margin-top: 0.5rem;
+}
+
+.btn {
+    margin-top: 1.5rem;
+}
+
+.title {
+    text-align: center;
+    margin: 1rem 0;
+}

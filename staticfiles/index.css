@@ -1,0 +1,13 @@
+.known-user{
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.index-list-container {
+    margin: 0 2rem;
+}
+
+.see-all-link {
+    font-size: 1.5rem;
+    text-align: right;
+}

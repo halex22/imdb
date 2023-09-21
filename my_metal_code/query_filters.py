@@ -5,6 +5,15 @@ from app_management.models import Album, Artist, Member
 
 filter_dict = {
     "most-rated":"-rating",
+    "reverse-alphabet-order": "-name",
+    "alphabet-order": "name",
+    "new-order": "-added_date",
+    "slug-order": "-slug",
+    "birth-date": "birth_date"
+}
+
+filter_message = {
+    "most-rated":"-rating",
     "alphabet-order": "-name",
     "new-order": "-added_date",
     "slug-order": "-slug",
@@ -48,6 +57,8 @@ class QueryManager:
             self.context.update(self.make_q_search())
         else:
             keys = [filter_dict[key] for key in self.row_query ]
+            if '-name' in keys:
+                self.context["alphabet_order"] = False
             all_albums = self.model.objects.all().order_by(*keys)
             self.context.update({"key_search":all_albums})
             

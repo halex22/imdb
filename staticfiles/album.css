@@ -1,0 +1,208 @@
+.name-artist {
+    display: flex;
+    align-items: baseline;
+}
+
+.album-name {
+    margin-right: 1rem;
+}
+
+.artist-name {
+    margin-left: 1rem;
+}
+
+.album-container, .album-contrib {
+    margin: 1rem 1.5rem;
+}
+
+.r-side {
+    display: grid;
+    grid-template-rows: 0.5fr 10fr
+}
+
+.album-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.img-cover-container {
+    display: flex;
+    justify-content: center;
+}
+
+.album-cover {
+    width: 15rem;
+}
+
+.date {
+    margin: 2rem 0 ;
+}
+a {
+    text-decoration: none;
+}
+.sub-info {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.sub-list {
+    list-style-type: none;
+}
+
+.sub-item {
+    display: inline; 
+    padding: 0.5rem;
+    border: 3px solid black;
+    border-radius: 10px;
+    color: white;
+    background-color: black;
+    text-align: center;
+}
+
+.other-album-img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+}
+
+.other-album-container{
+    margin: 0.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+
+.contribs li {
+    list-style-type: none;
+    display: inline;
+    margin: 0 0.2rem;
+    color: white;
+    background-color: black;
+    padding: 0.25rem;
+    border-radius: 10px;
+}
+
+.contribs {
+    display: flex;
+    justify-content: center;
+}
+
+.member-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+}
+
+.single-contrib {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.submit-btn {
+    margin-left: 1rem;
+}
+
+/* album list styles */
+.main-container {
+    margin: 0.5rem 1rem;
+}
+
+/* .outer-box {
+    border: 3px solid rgb(169, 169, 169);
+    border-radius: 5px;
+} */
+
+/* .album-list {
+    padding: 1rem 2rem;
+} */
+
+.list-album-name {
+    border-bottom: 16px;
+}
+
+.mini-pre-album {
+    display: inline;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.list-album-name {
+    max-height: 2rem;
+    text-align: center;
+}
+
+.cover-container {
+    margin: 3rem 0 1rem 0;
+}
+.single-album {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.two-borders-green {
+    border-bottom: 5px solid rgb(0, 136, 9);
+    border-right: 5px solid rgb(0, 136, 9);
+    border-bottom-right-radius: 10px;
+}
+.genres {
+    margin-bottom: 0.5rem;
+}
+
+.margin-div-container {
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+}
+
+.center-h {
+    background-color: black;
+    width: 10em;
+    height: 0.1rem;
+}
+
+.center-h-over {
+    background-color: green;
+    width: 16em;
+    height: 0.3rem;
+
+}
+
+.hidden-element {
+    display: none;
+}
+
+.your-rating, .rate-this-album{
+    margin-bottom: 1rem;
+}
+
+.rate-this-album form{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.help-text {
+    font-weight: bolder;
+}
+
+.bigger-text {
+    font-size: 2rem;
+}
+
+.image-animated {
+    -webkit-animation:spin 6s linear infinite;
+    -moz-animation:spin 6s linear infinite;
+    animation:spin 6s linear infinite;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

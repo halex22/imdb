@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block css_file %}
+    <link rel="stylesheet" href="{% static 'app_management/css/new_user.css' %}">
+{% endblock css_file %}
+{% block js_file %}
+    <script src="{% static 'app_management/js/new_user.js'%}"></script>
+{% endblock js_file %}
 
 {% block title %}Sign In{% endblock title %}
 
 {% block content %}
 
 <form method="post">
+    <div class="msg">
+        <h3>Thanks for your interest in this site 🥳​</h3>
+        <p>Please fill the folling form in order to create your account</p>
+    </div>
     <div class="form-container">
         {% include "form/new_user.html"  with submit_msg="Create new User" %}
     </div>
