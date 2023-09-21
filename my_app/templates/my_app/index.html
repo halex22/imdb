@@ -13,7 +13,10 @@
   {% if user.is_authenticated %}
   <div class="known-user">
     <h1>Hello {{user|title}}</h1>
-    {% include "my_app/user/user_welcome.html" %}
+    {% if user.is_staff or user.is_superuser %}
+      <h4><a href="{% url 'home-management' %}">Go to app-management</a></h4>
+    {% endif %}
+    <!-- {% include "my_app/user/user_welcome.html" %} -->
   </div>
   {% else %}
   <div class="hello-world">
@@ -48,10 +51,4 @@
     </div>
     <p class="see-all-link"><a href="{% url 'member-list' %}">see more...</a></p>
   </div>
-
-  <div class="latest-artist">
-    {{latest_artist}}
-  </div>
-  
-  
 {% endblock content %}

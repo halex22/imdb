@@ -17,6 +17,7 @@ class MetalHead(AbstractUser):
     def __str__(self) -> str:
         return super().__str__()
 
+
 class Genre(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(blank=True)
@@ -78,6 +79,7 @@ class Member(models.Model):
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
 
 class Album(models.Model):
     """

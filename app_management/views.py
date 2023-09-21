@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonRes
 from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic import TemplateView
-from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, ContributionForm, choiceArtist
+from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, ContributionForm, ChoiceArtist
 from .models import Artist, Album, Role, Member, Contributions
 from my_metal_code.decorators import show_errors, handle_img_from_form, update_session, presave_edit_form
 from my_metal_code import decorators
@@ -175,7 +175,7 @@ class AddContribution(CreateView):
 
 class SelectArtist(FormView):
     template_name = "choose_artist.html"
-    form_class = choiceArtist
+    form_class = ChoiceArtist
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         return redirect("add-contrib", pk=int(self.request.POST["artist"]))

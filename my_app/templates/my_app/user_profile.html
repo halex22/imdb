@@ -1,16 +1,35 @@
 {% extends 'base.html' %}
 {% load my_tags %}
+{% load static %}
+
+{% block css_file %}
+<link rel="stylesheet" href="{% static 'user.css'%}">
+{% endblock css_file %}
 {% block title %}Profile - {{metalhead.username|title}}{% endblock title %}
 
 {% block content %}
 <div class="main-container">
     <div class="profile-name">
-        <h2>{{metalhead.username|title}}</h2>
-        <h6>{% if metalhead.is_staff %}Moderator 🎖️{% else %}Normal User 👤{% endif %}</h6>
+        <h2>Hi {{metalhead.username|title}}</h2>
+        <h6>status: <b>{% if metalhead.is_staff %}Moderator 🎖️{% else %}Normal User 👤{% endif %}</b></h6>
         <h6>Last seen: {{metalhead.last_login|timesince}}</h6>
     </div>
     <div class="rated-albums">
         {% include "my_app/user/rated_albums.html" %}
     </div>
+
+    <div class="fav-artists">
+        <h4>Suggested artists of this month:</h4>
+        <div class="fav-artists-list row">
+            {% for artist in fav_artists %}
+            <div class="fav-container col-lg-4 col-md-6">                
+                <h5><a href="{% url 'artist' pk=artist.pk slug=artist.slug %}">{{artist.name|title}}</a></h5>
+                <img src="{{ artist.img.url }}" alt="" class="mini-artist">                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
+
+
 {% endblock content %}

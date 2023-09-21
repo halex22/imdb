@@ -1,11 +1,14 @@
 {% load my_tags %}
-<ul>
+<dicl class="row " id="rated-list">
     {% for album in rated_albums %}
         {% spaceless %}
-        <li>
-            <a href="{% url 'album' pk=album.pk artist_slug=album.artist.slug album_slug=album.slug %}">{{album.name|title}}</a>
-            <span> - rated {{metalhead.votes|get_user_rate:album.id}}</span>
-        </li>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xsm-6 rated-album">
+            <img src="{{ album.img.url}}" alt="" class="mini-img">
+            <div class="text">
+                <a class="album-link" href="{% url 'album' pk=album.pk artist_slug=album.artist.slug album_slug=album.slug %}">{{album.name|title}}</a>
+            <p>rated: <b>{{metalhead.votes|get_user_rate:album.id}}</b></p>
+            </div>
+        </div>
         {% endspaceless %}
     {% empty %}
     <span>
@@ -16,4 +19,4 @@
         {% endif %}
     </span>
     {% endfor %}
-</ul>
+</dicl>

@@ -16,7 +16,10 @@
             <div class="l-side col-md-6">
                 <div class="artist-element">
                     <div class="artist-name-options">
-                        <h4 id="fav-icon">{% if is_favorite %}🤩{% endif %}</h4><h2>{{artist.name|title}}</h2>
+                        <h2>{{artist.name|title}}</h2><h4 id="fav-icon">{% if is_favorite %}🤩{% endif %}</h4>
+                        <div class="add-btn">
+                            {% if user.is_staff %}{% include "form/fav_forms/fav_artist.html" %}{% endif %}                        
+                        </div>
                         {% if user.is_authenticated %}
                         <div class="options">
                             <span class="edit-delete"><a href="{% url 'edit-artist' pk=artist.id %}">Edit</a></span>
@@ -82,7 +85,5 @@
                 {% endfor %}
             </div>
         </div>
-        
-    {% include "form/fav_forms/fav_artist.html" %}
     </div>
 {% endblock content %}

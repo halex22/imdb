@@ -15,16 +15,12 @@ body {
 }
 
 .form-container {
-    margin: 5rem 15%;
+    margin: 4rem 15%;
 }
 
 .form-label, .form-select {
     padding-left: 0.5rem;
 }
-
-/* button {
-    margin-top: 2rem;
-} */
 
 .main-block-container {
     margin: 2rem 4rem;

@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class choiceArtist(Form):
+class ChoiceArtist(Form):
     artist = ModelChoiceField(
         queryset=Artist.objects,
         widget=Select(attrs={"class": "form-element form-select"})
@@ -18,11 +18,10 @@ class choiceArtist(Form):
 
 
 class SingUpForm(UserCreationForm):
-    
     class Meta:
-       model = User
-       fields = ("username",)
-       field_classes = {"username": UsernameField}
+        model = User
+        fields = ("username",)
+        field_classes = {"username": UsernameField}
 
 
 class NewForm(ModelForm):
@@ -98,35 +97,32 @@ class NewUserForm(ModelForm):
 
 
 class RatingForm(Form):
-    
     rate = FloatField(max_value=10, min_value=1, help_text="rate this album in the scale of 1 to 10", required=True,
-                        widget=Input(attrs={"type":"number", "step": "0.01","id": "rate"}))
+                      widget=Input(attrs={"type": "number", "step": "0.01", "id": "rate"}))
     voter_id = IntegerField(min_value=1, required=True)
     album_id = IntegerField(min_value=1, required=True)
 
 
 class RoleForm(ModelForm):
-
     added_roles = [role.name for role in Role.objects.all()]
 
     def __init__(self, *args, **kwargs):
         super(RoleForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model =  Role
+        model = Role
         fields = "__all__"
 
         widgets = {
             "name": create_select(iterable=metal_instruments)
         }
 
-        help_text =  {
+        help_text = {
             "Guitarrist, Drummer, Singer... if the role is not on the list please contact one of the admin members"
         }
 
 
 class MemberForm(ModelForm):
-
     class Meta:
         model = Member
         fields = "__all__"
@@ -153,10 +149,9 @@ class ContributionForm(ModelForm):
         all_members = artist.former_groups.all().union(artist.active_groups.all())
         super(ContributionForm, self).__init__(*args, **kwargs)
         self.fields["member"].widget = create_select(iterable=all_members)
-        self.fields["album"]. widget = create_select(iterable=artist.albums.all())
+        self.fields["album"].widget = create_select(iterable=artist.albums.all())
 
     class Meta:
         model = Contributions
         fields = "__all__"
         widgets = {"roles": create_multi_select(iterable=Role.objects.all())}
-        

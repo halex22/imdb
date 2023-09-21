@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block css_file %}{% endblock css_file %}
+{% block css_file %}
+<style>
+    .welcome {
+        margin-top: 1rem;
+        text-align: center;
+    }
+</style>
+{% endblock css_file %}
 
 {% block title %}Log in{% endblock title %}
 
 
 {% block content %}
     <div class="welcome">
-        <h2>Welcome back dear Metahead</h2>
+        <h3>Welcome back Metahead</h3>
     </div>
     <div class="form-container">
         {% include "form/new_user.html" with submit_msg="Log in" %}

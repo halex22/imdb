@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView
 from app_management.models import Album, Artist, Member
@@ -107,6 +107,8 @@ class UserView(DetailView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         metalhead = self.get_object()
+        if self.request.session.get("fav_artists"):
+            context["fav_artists"] = get_fav_artists(self.request.session.get("fav_artists"))
         if metalhead.votes:
             context["rated_albums"] = get_rated_albums(user_id=int(metalhead.pk))
         return context
