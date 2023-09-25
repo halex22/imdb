@@ -1,5 +1,5 @@
 from pathlib import Path
-from os import environ
+from os import environ, getenv
 from dotenv import load_dotenv
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -10,14 +10,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# 'django-insecure-nj-u3i-%8@h--(ws3)+sa0e2p0swvu+!x*#1&%zbz!17nn0i1a'
 SECRET_KEY = environ['PROJECT-KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = environ['IN-DEVELOPMENT']
 
 ALLOWED_HOSTS = [
-    environ["APP-HOST"]
+    environ["APP-HOST"],
+    '127.0.0.1'
 ]
 
 # Application definition
