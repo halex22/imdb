@@ -1,6 +1,9 @@
-from typing import List, Optional, Dict, Union
+from typing import Dict, List, Optional, Union
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_list_or_404, get_object_or_404
-from app_management.models import Artist, Album, MetalHead
+
+from app_management.models import Album, Artist, MetalHead
 
 
 def get_fav_artists(query_list: List[int]) -> List[Artist]:
@@ -53,10 +56,8 @@ def get_old_vote(user:MetalHead, album_id: int) -> float:
 
 
 def artist_name_exist(name: str) -> bool:
-    pk = None
     try:
         if Artist.objects.get(name=name):
-            pk = Artist.objects.get(name=name).pk
-    except:
-        pass
-    return pk 
+            return Artist.objects.get(name=name).pk
+    except ObjectDoesNotExist:
+        return None

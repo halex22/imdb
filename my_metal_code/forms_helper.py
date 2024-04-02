@@ -1,6 +1,7 @@
-from django.forms.widgets import Select, SelectMultiple
-from django.db.models.query import QuerySet
 from typing import Dict, List, Union
+
+from django.db.models.query import QuerySet
+from django.forms.widgets import Select, SelectMultiple
 
 
 def capitalize_words(name: str) -> str:

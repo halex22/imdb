@@ -1,15 +1,17 @@
 from typing import Any, Dict
+
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import DetailView, TemplateView
+
+from app_management.forms import RatingForm
 from app_management.models import Album, Artist, Member
 from my_metal_code.db_helper import get_fav_artists, get_rated_albums
 from my_metal_code.query_filters import QueryManager
-from django.contrib.auth.views import LoginView, LogoutView
-from app_management.forms import RatingForm
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 

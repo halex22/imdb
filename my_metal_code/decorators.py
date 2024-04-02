@@ -1,10 +1,13 @@
-from django.forms import BaseModelForm
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, HttpRequest
-from django.contrib import messages
 from functools import wraps
-from .db_helper import rate_req_cleaner, update_album_rating, get_old_vote
-from app_management.models import MetalHead, Album
+
+from django.contrib import messages
+from django.forms import BaseModelForm
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404
+
+from app_management.models import Album, MetalHead
+
+from .db_helper import get_old_vote, rate_req_cleaner, update_album_rating
 
 
 def show_errors(view_method):

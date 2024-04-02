@@ -1,6 +1,7 @@
-from django.urls import path, reverse
-from . import views
 from django.contrib.auth.decorators import login_required, permission_required
+from django.urls import path, reverse
+
+from . import views
 
 is_staff_dec = permission_required('app_management.is_staff',login_url="/log-in")
 

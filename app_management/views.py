@@ -1,19 +1,23 @@
 from typing import Any, Dict
-from django.shortcuts import redirect, get_object_or_404
+
+from django.contrib.auth import get_user_model, login
 from django.forms.models import BaseModelForm
-from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import (HttpRequest, HttpResponse, HttpResponseRedirect,
+                         JsonResponse)
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic.edit import CreateView, UpdateView, FormView
 from django.views.generic import TemplateView
-from .forms import NewForm, NewArtistForm, SingUpForm, RoleForm, MemberForm, ContributionForm, ChoiceArtist
-from .models import Artist, Album, Role, Member, Contributions
-from my_metal_code.decorators import show_errors, handle_img_from_form, update_session, presave_edit_form
+from django.views.generic.edit import CreateView, FormView, UpdateView
+
 from my_metal_code import decorators
-from django.contrib.auth import login
-from django.urls import reverse_lazy
 from my_metal_code.db_helper import artist_name_exist
-from django.contrib.auth import get_user_model
+from my_metal_code.decorators import (handle_img_from_form, presave_edit_form,
+                                      show_errors, update_session)
+
+from .forms import (ChoiceArtist, ContributionForm, MemberForm, NewArtistForm,
+                    NewForm, RoleForm, SingUpForm)
+from .models import Album, Artist, Contributions, Member, Role
 
 User = get_user_model()
 

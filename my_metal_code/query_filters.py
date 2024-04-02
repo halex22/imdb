@@ -1,6 +1,8 @@
-from django.db.models.query import QuerySet
 from typing import Union
+
 from django.db.models import Q
+from django.db.models.query import QuerySet
+
 from app_management.models import Album, Artist, Member
 
 filter_dict = {
